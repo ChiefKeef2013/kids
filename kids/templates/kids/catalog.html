@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог кружков{% endblock %}
+
+{% block content %}
+<h1>Каталог кружков</h1>
+
+<form method="get" style="max-width: 100%; margin-bottom: 40px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <p>
+            <label>Поиск:</label>
+            <input type="text" name="search" value="{{ request.GET.search }}" placeholder="Название кружка">
+        </p>
+        <p>
+            <label>Направление:</label>
+            <input type="text" name="direction" value="{{ request.GET.direction }}" placeholder="Например, Техника">
+        </p>
+        <p>
+            <label>Мин. возраст:</label>
+            <input type="number" name="min_age" value="{{ request.GET.min_age }}">
+        </p>
+        <p>
+            <label>День недели:</label>
+            <select name="day">
+                <option value="">Любой</option>
+                <option value="1" {% if request.GET.day == '1' %}selected{% endif %}>Понедельник</option>
+                <option value="2" {% if request.GET.day == '2' %}selected{% endif %}>Вторник</option>
+                <option value="3" {% if request.GET.day == '3' %}selected{% endif %}>Среда</option>
+                <option value="4" {% if request.GET.day == '4' %}selected{% endif %}>Четверг</option>
+                <option value="5" {% if request.GET.day == '5' %}selected{% endif %}>Пятница</option>
+                <option value="6" {% if request.GET.day == '6' %}selected{% endif %}>Суббота</option>
+                <option value="7" {% if request.GET.day == '7' %}selected{% endif %}>Воскресенье</option>
+            </select>
+        </p>
+    </div>
+    <button type="submit">Применить фильтры</button>
+</form>
+
+{% for group in page_obj %}
+    <article class="card">
+        <h3><a href="{% url 'group_detail' group.id %}">{{ group.club.name }}</a></h3>
+        <small>Направление: {{ group.club.direction }} | Возраст: {{ group.min_age }}-{{ group.max_age }} лет</small>
+        <p>{{ group.club.description }}</p>
+        <p>Вместимость: {{ group.capacity }} чел. | Свободно: <span id="capacity-{{ group.id }}">...</span></p>
+    </article>
+{% empty %}
+    <p>Кружки не найдены.</p>
+{% endfor %}
+
+<div style="margin-top: 30px; text-align: center;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" class="btn">&larr; Назад</a>
+    {% endif %}
+    <span style="margin: 0 15px;">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" class="btn">Вперёд &rarr;</a>
+    {% endif %}
+</div>
+
+<script>
+document.querySelectorAll('[id^="capacity-"]').forEach(el => {
+    const groupId = el.id.split('-')[1];
+    fetch(`/api/group/${groupId}/capacity/`)
+        .then(response => response.json())
+        .then(data => {
+            el.textContent = data.available + ' из ' + data.capacity;
+        });
+});
+</script>
+{% endblock %}

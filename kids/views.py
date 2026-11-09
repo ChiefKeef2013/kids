@@ -7,7 +7,15 @@ from django.db.models import Count, Avg
 from django.core.paginator import Paginator
 from datetime import date, timedelta
 import csv
-from .models import Child, Group, Subscription, Attendance, MedicalCertificate
+from .models import Child, Club, Teacher, Group, Room, Schedule, Subscription, Attendance, MedicalCertificate
+
+def home(request):
+    return render(request, 'kids/home.html')
+
+def group_detail(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    children = Child.objects.filter(parent=request.user) if request.user.is_authenticated else []
+    return render(request, 'kids/group_detail.html', {'group': group, 'children': children})
 
 @login_required
 def enroll_child(request, group_id):
@@ -87,6 +95,31 @@ def dashboard(request):
         'total_groups': total_groups,
         'children': children
     })
+
+@login_required
+def upload_certificate(request, subscription_id):
+    subscription = get_object_or_404(Subscription, id=subscription_id, child__parent=request.user)
+    
+    if request.method == 'POST' and request.FILES.get('file'):
+        file = request.FILES['file']
+        
+        if file.size > 5 * 1024 * 1024:
+            messages.error(request, 'Файл слишком большой (максимум 5 МБ).')
+            return redirect('dashboard')
+            
+        if not file.name.lower().endswith(('.pdf', '.jpg', '.jpeg')):
+            messages.error(request, 'Разрешены только PDF и JPG файлы.')
+            return redirect('dashboard')
+        
+        MedicalCertificate.objects.create(
+            subscription=subscription,
+            file=file,
+            status='pending'
+        )
+        messages.success(request, 'Справка загружена и отправлена на проверку.')
+        return redirect('dashboard')
+    
+    return render(request, 'kids/upload_certificate.html', {'subscription': subscription})
 
 def export_attendance(request):
     response = HttpResponse(content_type='text/csv')

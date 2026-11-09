@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ group.club.name }}{% endblock %}
+
+{% block content %}
+<article class="card">
+    <h1>{{ group.club.name }}</h1>
+    <p>{{ group.club.description }}</p>
+    <p><strong>Направление:</strong> {{ group.club.direction }}</p>
+    <p><strong>Возрастные рамки:</strong> от {{ group.min_age }} до {{ group.max_age }} лет</p>
+    <p><strong>Вместимость группы:</strong> {{ group.capacity }} человек</p>
+</article>
+
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'enroll' group.id %}">
+        {% csrf_token %}
+        <h2>Запись в группу</h2>
+        <p>
+            <label>Выберите ребёнка:</label>
+            <select name="child_id" required>
+                {% for child in children %}
+                    <option value="{{ child.id }}">{{ child.full_name }} ({{ child.get_age }} лет)</option>
+                {% empty %}
+                    <option disabled>У вас нет добавленных детей. Обратитесь к администратору.</option>
+                {% endfor %}
+            </select>
+        </p>
+        <button type="submit">Записать ребёнка</button>
+    </form>
+{% else %}
+    <div class="card">
+        <p>Чтобы записать ребёнка, пожалуйста, <a href="{% url 'login' %}">войдите в систему</a>.</p>
+    </div>
+{% endif %}
+
+<br>
+<a href="{% url 'catalog' %}">&larr; Назад к каталогу</a>
+{% endblock %}

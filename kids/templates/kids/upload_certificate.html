@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Загрузка медицинской справки{% endblock %}
+
+{% block content %}
+<h1>Загрузка медицинской справки</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>
+        <label>Абонемент:</label>
+        <input type="text" value="{{ subscription.group.club.name }} ({{ subscription.child.full_name }})" disabled>
+    </p>
+    <p>
+        <label>Выберите файл (PDF или JPG, до 5 МБ):</label>
+        <input type="file" name="file" accept=".pdf,.jpg,.jpeg" required>
+    </p>
+    <button type="submit">Загрузить на проверку</button>
+</form>
+<br>
+<a href="{% url 'dashboard' %}">&larr; Назад в кабинет</a>
+{% endblock %}
