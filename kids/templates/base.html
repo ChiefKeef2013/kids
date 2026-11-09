@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детский развивающий центр</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Детский развивающий центр</h1>
+    </header>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="/catalog/">Каталог кружков</a>
+        {% if user.is_authenticated %}
+            <a href="/dashboard/">Кабинет</a>
+            <a href="/admin/">Админка</a>
+            <a href="/logout/">Выход</a>
+        {% else %}
+            <a href="/login/">Вход</a>
+        {% endif %}
+    </nav>
+    <main>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="card" style="border-left-color: {% if message.tags == 'error' %}#ef5350{% else %}#81C784{% endif %};">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
