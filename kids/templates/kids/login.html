@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Вход — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Вход в личный кабинет родителя детского центра «Умный ребёнок».{% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth-art">
+    <a class="brand" href="{% url 'home' %}">
+      <span class="brand-mark">УР</span>
+      <span>
+        <span class="brand-name">Умный ребёнок</span>
+        <span class="brand-sub">Детский центр · Ульяновск</span>
+      </span>
+    </a>
+    <blockquote>
+      <p>«Расписание, абонемент и отчёты педагога — в одном месте. Без звонков и бумажных журналов».</p>
+      <footer>Личный кабинет родителя</footer>
+    </blockquote>
+  </div>
+  <div class="auth-form-wrap">
+    <div class="auth-form">
+      <span class="eyebrow">Родителям</span>
+      <h1>Вход</h1>
+      <p>Войдите, чтобы посмотреть расписание, абонементы и записи ребёнка.</p>
+      <form action="{% url 'login' %}" method="post" data-validate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert--error">
+            <div>{% for error in form.non_field_errors %}{{ error }}{% endfor %}</div>
+          </div>
+        {% endif %}
+        {% include "kids/partials/field.html" with field=form.username %}
+        {% include "kids/partials/field.html" with field=form.password %}
+        <div class="form-actions form-actions--between">
+          <label class="checkbox-line"><input type="checkbox" name="remember"><span>Запомнить меня</span></label>
+          <a class="link-arrow" href="{% url 'contacts' %}">Забыли пароль?</a>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" type="submit">Войти</button>
+      </form>
+      <p class="auth-alt">Ещё нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+      <div class="auth-demo">
+        Демо-доступ для проверки: <b>parent@example.com</b> / <b>demo12345</b>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

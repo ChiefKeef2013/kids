@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Регистрация аккаунта родителя в детском центре «Умный ребёнок».{% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth-art">
+    <a class="brand" href="{% url 'home' %}">
+      <span class="brand-mark">УР</span>
+      <span>
+        <span class="brand-name">Умный ребёнок</span>
+        <span class="brand-sub">Детский центр · Ульяновск</span>
+      </span>
+    </a>
+    <blockquote>
+      <p>«Записались на пробное — и сразу видите расписание, педагога и свободные места в группе».</p>
+      <footer>Один аккаунт на семью</footer>
+    </blockquote>
+  </div>
+  <div class="auth-form-wrap">
+    <div class="auth-form">
+      <span class="eyebrow">Новый аккаунт</span>
+      <h1>Регистрация</h1>
+      <p>Создайте аккаунт родителя. Данные ребёнка добавите в кабинете после первого занятия.</p>
+      <form action="{% url 'register' %}" method="post" data-validate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert--error">
+            <div>{% for error in form.non_field_errors %}{{ error }}{% endfor %}</div>
+          </div>
+        {% endif %}
+        {% include "kids/partials/field.html" with field=form.full_name %}
+        {% include "kids/partials/field.html" with field=form.phone %}
+        {% include "kids/partials/field.html" with field=form.email %}
+        {% include "kids/partials/field.html" with field=form.password1 %}
+        {% include "kids/partials/field.html" with field=form.password2 %}
+        {% include "kids/partials/field.html" with field=form.consent %}
+        <button class="btn btn-accent btn-block btn-lg mt-20" type="submit">Создать аккаунт</button>
+      </form>
+      <p class="auth-alt">Уже зарегистрированы? <a href="{% url 'login' %}">Войти</a></p>
+      <div class="auth-demo">
+        После регистрации вы попадёте в личный кабинет и сможете записаться на пробное занятие.
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

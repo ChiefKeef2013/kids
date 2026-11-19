@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Запись на занятие — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Запись на пробное занятие в детский центр «Умный ребёнок»: форма заявки, выбор направления и времени.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <a href="{% url 'clubs' %}">Направления</a> <span>/</span> <span>Запись на занятие</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Запись <em>на занятие</em></h1>
+        <p class="page-desc">Заполните форму — администратор перезвонит в течение рабочего дня и подтвердит место в группе. Пробное занятие бесплатное.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container club-layout">
+    <div class="form-card">
+      <h2 class="section-title section-title--form">Заявка на <em>пробное</em></h2>
+      <p class="muted mt-12">Поля со звёздочкой обязательны. Данные нужны только для записи и связи — мы не передаём их третьим лицам.</p>
+      <form class="mt-28" method="post" action="{% url 'booking' %}" data-validate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert--error mt-12">
+            <div>{% for error in form.non_field_errors %}{{ error }}{% endfor %}</div>
+          </div>
+        {% endif %}
+        <div class="form-grid">
+          {% include "kids/partials/field.html" with field=form.parent_name %}
+          {% include "kids/partials/field.html" with field=form.phone %}
+          {% include "kids/partials/field.html" with field=form.email %}
+          {% include "kids/partials/field.html" with field=form.child_name %}
+          {% include "kids/partials/field.html" with field=form.child_age %}
+          {% include "kids/partials/field.html" with field=form.club %}
+          {% include "kids/partials/field.html" with field=form.preferred_day %}
+          {% include "kids/partials/field.html" with field=form.preferred_time %}
+          {% include "kids/partials/field.html" with field=form.comment extra_class="field--full" %}
+          {% include "kids/partials/field.html" with field=form.consent %}
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-accent btn-lg" type="submit">Отправить заявку</button>
+          <a class="btn btn-ghost" href="{% url 'schedule' %}">Сначала посмотреть расписание</a>
+        </div>
+      </form>
+    </div>
+
+    <aside class="booking-card">
+      <span class="tag tag--sage">Пробное — 0 ₽</span>
+      {% if featured %}
+      <p class="price-name mt-12">{{ featured.name }}</p>
+      <p class="booking-note mt-12">{{ featured.tagline }} Педагог — {{ featured.groups.first.teacher.full_name }}, каб. {{ featured.groups.first.room }}.</p>
+      <hr>
+      <dl class="requisites">
+        <dt>Возраст</dt><dd>{{ featured.age_range }}</dd>
+        <dt>Группа</dt><dd>до {{ featured.groups.first.capacity }} человек</dd>
+        <dt>Занятие</dt><dd>60 минут</dd>
+        <dt>Стоимость</dt><dd>0 ₽ за пробное</dd>
+      </dl>
+      {% else %}
+      <p class="price-name mt-12">Пробное занятие</p>
+      <p class="booking-note mt-12">Оставьте заявку — администратор подберёт направление и группу по возрасту, свободным местам и удобному времени.</p>
+      <hr>
+      <dl class="requisites">
+        <dt>Возраст</dt><dd>3–14 лет</dd>
+        <dt>Занятие</dt><dd>60 минут</dd>
+        <dt>Стоимость</dt><dd>0 ₽ за пробное</dd>
+        <dt>Направление</dt><dd>подберём вместе</dd>
+      </dl>
+      {% endif %}
+      <hr>
+      <p class="filter-title">Что взять с собой</p>
+      <ul class="checklist">
+        <li>Сменную обувь для ребёнка</li>
+        <li>Воду в бутылке</li>
+        <li>Хорошее настроение — остальное выдадим</li>
+      </ul>
+      <p class="booking-note mt-20">Приходите за 10 минут до начала: нужно заполнить согласие и познакомиться с педагогом.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Дальше</span>
+        <h2 class="section-title">Что будет после <em>заявки</em></h2>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>Звонок администратора</h3>
+        <p>Уточняем возраст, удобное время и свободные места — обычно в течение двух часов.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>Подтверждение в кабинете</h3>
+        <p>Запись появляется в личном кабинете, туда же приходит напоминание за день до занятия.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>Пробное занятие</h3>
+        <p>Смотрите, как ребёнок включается в работу. После занятия обсуждаем группу и абонемент.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
