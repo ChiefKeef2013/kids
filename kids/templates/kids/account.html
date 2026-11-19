@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Личный кабинет — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Личный кабинет родителя: дети, абонементы, посещаемость, платежи и ближайшие занятия.{% endblock %}
+
+{% block content %}
+<section class="section section--tight">
+  <div class="container account-layout">
+    <aside class="account-nav" aria-label="Разделы кабинета">
+      <a class="is-active" href="#profile" aria-current="true">Профиль</a>
+      <a href="#children">Мои дети</a>
+      <a href="#subscriptions">Абонементы</a>
+      <a href="#attendance">Посещаемость</a>
+      <a href="#payments">Платежи</a>
+      <div class="divider"></div>
+      <a href="{% url 'logout' %}">Выйти</a>
+    </aside>
+
+    <div>
+      <div class="account-head" id="profile">
+        <div>
+          <span class="eyebrow">Личный кабинет</span>
+          <h1 class="mt-12">Здравствуйте, {{ user.first_name|default:user.username }}</h1>
+          <p class="muted">{{ user.email }}{% if user.profile.phone %} · {{ user.profile.phone }}{% endif %}</p>
+        </div>
+        <a class="btn btn-accent" href="{% url 'booking' %}">Записать ребёнка</a>
+      </div>
+
+      {% if next_lessons %}
+      {% with lesson=next_lessons.0 %}
+      <div class="alert alert--warning">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="3.2" width="12" height="11" rx="2"/><path d="M2 6.6h12M5.4 1.6v2.8M10.6 1.6v2.8"/></svg>
+        <div>
+          <b>Ближайшее занятие</b>
+          {{ lesson.group.club.name }}, группа «{{ lesson.group.title }}»: {{ lesson.day_name }}, {{ lesson.time_range }}, кабинет {{ lesson.room.number|default:"—" }}. Если время не подходит — напишите администратору.
+        </div>
+      </div>
+      {% endwith %}
+      {% endif %}
+
+      <div class="panel mt-20" id="children">
+        <div class="panel-head">
+          <h2>Мои дети</h2>
+          <a class="link-arrow" href="{% url 'booking' %}">Записать на занятие <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+        </div>
+        {% for child in children %}
+        <div class="child-row">
+          <span class="avatar">{{ child.initial }}</span>
+          <div>
+            <b>{{ child.full_name }}</b>
+            <small>
+              {{ child.age }} лет
+              {% for subscription in child.subscriptions.all %}
+                {% if subscription.status == "active" %} · {{ subscription.group.club.name }}, «{{ subscription.group.title }}»{% endif %}
+              {% endfor %}
+            </small>
+          </div>
+          {% for subscription in child.subscriptions.all %}
+            {% if subscription.status == "active" %}
+            <a class="btn btn-outline btn-sm" href="{{ subscription.group.club.get_absolute_url }}">Кружок</a>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% empty %}
+        <p class="muted">Пока не добавлено ни одного ребёнка. Запишитесь на пробное занятие — администратор добавит данные в кабинет.</p>
+        {% endfor %}
+      </div>
+
+      <div class="panel" id="subscriptions">
+        <div class="panel-head">
+          <h2>Абонементы</h2>
+          <a class="link-arrow" href="{% url 'pricing' %}">Все тарифы <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+        </div>
+        {% for subscription in subscriptions %}
+        <div class="sub-card">
+          <div class="sub-top">
+            <div>
+              <b>{{ subscription.group.club.name }} · {{ subscription.total_classes }} {% if subscription.total_classes == 1 %}занятие{% elif subscription.total_classes < 5 %}занятия{% else %}занятий{% endif %}</b>
+              <small>{{ subscription.child.full_name }} · действует до {{ subscription.end_date|date:"j E" }}</small>
+            </div>
+            {% if subscription.status == "active" %}
+              {% if subscription.remaining_classes <= 1 %}
+              <span class="status status--few">Заканчивается</span>
+              {% else %}
+              <span class="status status--ok">Активен</span>
+              {% endif %}
+            {% else %}
+            <span class="status status--neutral">Завершён</span>
+            {% endif %}
+          </div>
+          <div class="progress"><span class="bar--{{ subscription.progress }}"></span></div>
+          <div class="sub-foot"><span>Использовано {{ subscription.used_classes }} из {{ subscription.total_classes }} занятий</span><span>Осталось {{ subscription.remaining_classes }}</span></div>
+        </div>
+        {% empty %}
+        <p class="muted">Абонементов пока нет. Пробное занятие бесплатное, абонемент оформляется после него.</p>
+        {% endfor %}
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Ближайшие занятия</h2>
+          <a class="link-arrow" href="{% url 'schedule' %}">Расписание <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>День</th><th>Направление</th><th>Группа</th><th>Время</th><th>Кабинет</th></tr>
+            </thead>
+            <tbody>
+              {% for lesson in next_lessons %}
+              <tr>
+                <td class="strong">{{ lesson.day_name }}</td>
+                <td>{{ lesson.group.club.name }}</td>
+                <td>{{ lesson.group.title }}</td>
+                <td class="num">{{ lesson.time_range }}</td>
+                <td>{{ lesson.room.number|default:"—" }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="5">Ближайших занятий нет — запишитесь на пробное.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" id="attendance">
+        <div class="panel-head">
+          <h2>Посещаемость</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Дата</th><th>Ребёнок</th><th>Направление</th><th>Отметка</th></tr>
+            </thead>
+            <tbody>
+              {% for row in attendance %}
+              {% if row.attendance__date %}
+              <tr>
+                <td class="strong">{{ row.attendance__date|date:"j E" }}</td>
+                <td>{{ row.full_name }}</td>
+                <td>{{ row.attendance__schedule__group__club__name }}</td>
+                <td>
+                  {% if row.attendance__status == "present" %}
+                  <span class="status status--ok">Был</span>
+                  {% else %}
+                  <span class="status status--few">Пропуск</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endif %}
+              {% empty %}
+              <tr><td colspan="4">Отметок пока нет.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <p class="hint mt-20">Пропуск по справке переносится в течение 30 дней. Заявку на перерасчёт можно подать на ресепшене или через администратора.</p>
+      </div>
+
+      <div class="panel" id="payments">
+        <div class="panel-head">
+          <h2>Платежи</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Дата</th><th>Ребёнок</th><th>Назначение</th><th>Сумма</th><th>Статус</th></tr>
+            </thead>
+            <tbody>
+              {% for payment in payments %}
+              <tr>
+                <td class="strong">{{ payment.date|date:"j E" }}</td>
+                <td>{{ payment.child.full_name }}</td>
+                <td>{{ payment.purpose }}</td>
+                <td class="num">{{ payment.amount }} ₽</td>
+                <td>
+                  {% if payment.status == "paid" %}
+                  <span class="status status--ok">Оплачен</span>
+                  {% else %}
+                  <span class="status status--few">Ожидает</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="5">Платежей пока нет.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
