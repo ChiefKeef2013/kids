@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Абонементы и цены — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Абонементы детского центра «Умный ребёнок»: разовые занятия, 4 и 8 занятий в месяц, скидки для второго ребёнка и многодетных семей.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <span>Абонементы</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Абонементы <em>и цены</em></h1>
+        <p class="page-desc">Пробное занятие бесплатное. Дальше — абонемент на 4 или 8 занятий, без вступительных взносов и скрытых платежей.</p>
+      </div>
+      <a class="btn btn-outline" href="{% url 'contacts' %}">Спросить об оплате</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="grid grid-3">
+      {% for plan in plans %}
+      <article class="price-card{% if plan.is_featured %} price-card--featured{% endif %}">
+        <span class="tag{% if plan.is_featured %} tag--accent{% endif %} price-tag">{% if plan.is_featured %}Выбирают чаще{% else %}{{ plan.lessons }} {% if plan.lessons == 1 %}занятие{% elif plan.lessons < 5 %}занятия{% else %}занятий{% endif %}{% endif %}</span>
+        <p class="price-name">{{ plan.name }}</p>
+        <div class="price-value"><b>{{ plan.price }} ₽</b><span>/ {% if plan.lessons == 1 %}занятие{% else %}месяц{% endif %}</span></div>
+        <p class="price-note">{{ plan.description }}</p>
+        <ul class="price-list">
+          {% for feature in plan.features_list %}<li>{{ feature }}</li>{% endfor %}
+        </ul>
+        <a class="btn {% if plan.is_featured %}btn-accent{% else %}btn-outline{% endif %} btn-block" href="{% url 'booking' %}">{% if plan.is_featured %}Оформить{% else %}Записаться{% endif %}</a>
+      </article>
+      {% empty %}
+      <div class="empty">Тарифы обновляются — позвоните администратору.</div>
+      {% endfor %}
+    </div>
+
+    <div class="alert alert--info mt-28">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6 14 7.6 9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6z"/></svg>
+      <div>
+        <b>Скидки и льготы</b>
+        Второй ребёнок из одной семьи — минус 15% на любой абонемент. Для многодетных семей — минус 20%. Скидки не суммируются, но мы всегда подскажем, какой вариант выгоднее.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container container--narrow">
+    <span class="eyebrow">Вопросы</span>
+    <h2 class="section-title">Частые <em>вопросы</em></h2>
+    <div class="faq">
+      <details open>
+        <summary>Можно ли вернуть деньги за абонемент?</summary>
+        <p>Да. Если занятия ещё не начались — возвращаем полную стоимость. Если начались — считаем по стоимости разового занятия и возвращаем остаток в течение 10 рабочих дней.</p>
+      </details>
+      <details>
+        <summary>Что делать, если ребёнок заболел?</summary>
+        <p>Сообщите администратору в день занятия. Пропуск по справке от врача переносится на следующий месяц, без справки — сгорает. Это условие прописано в договоре.</p>
+      </details>
+      <details>
+        <summary>Можно ли перейти в другую группу?</summary>
+        <p>Да, если есть свободное место и подходит возраст. Первый переход внутри центра — бесплатно, дальше — по согласованию с администратором.</p>
+      </details>
+      <details>
+        <summary>Нужно ли покупать материалы для рисования?</summary>
+        <p>Нет. Краски, бумага, кисти и фартуки входят в стоимость. Домой ребёнок забирает готовые работы, а не набор материалов.</p>
+      </details>
+      <details>
+        <summary>Как оплатить?</summary>
+        <p>Картой на сайте, переводом по QR-коду или наличными на ресепшене. Чек приходит на почту, указанную в личном кабинете.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-inner">
+        <div>
+          <span class="eyebrow eyebrow--on-dark">Сомневаетесь</span>
+          <h2 class="mt-12">Начните с <em>бесплатного</em> занятия</h2>
+          <p>Абонемент покупается только после пробного. Если формат не подойдёт, вы ничего не платите.</p>
+        </div>
+        <a class="btn btn-accent btn-lg" href="{% url 'booking' %}">Записаться на пробное</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

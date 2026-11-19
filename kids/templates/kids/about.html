@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}О центре — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Детский центр «Умный ребёнок» в Ульяновске: история, принципы работы, маленькие группы и педагоги с профильным образованием.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <span>О центре</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">О центре <em>«Умный ребёнок»</em></h1>
+        <p class="page-desc">Работаем в Ульяновске с 2017 года. {{ stats.clubs }} направлений, {{ stats.groups }} группы и {{ stats.teachers }} педагогов — и всё это на одном этаже.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container about-hero">
+    <div>
+      <span class="eyebrow">Наша идея</span>
+      <h2 class="section-title">Не «развивашка», а место, где <em>получается</em></h2>
+      <p class="lead mt-20">Мы открылись, потому что хотели водить своих детей в место, где не нужно выбирать между интересом и дисциплиной. Где ребёнок собирает робота, ошибается, переделывает — и уходит довольным.</p>
+      <p class="mt-20 muted">Сегодня в центре {{ stats.clubs }} направлений: от робототехники и научной лаборатории до театральной студии и шахмат. Мы сознательно не растём быстрее, чем можем найти педагогов: лучше меньше групп, но с теми, к кому дети идут сами.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{% url 'teachers' %}">Педагоги центра</a>
+        <a class="btn btn-outline" href="{% url 'contacts' %}">Как добраться</a>
+      </div>
+    </div>
+    <div class="about-art"></div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="numbers">
+      <div><b>2017</b><span>год открытия</span></div>
+      <div><b>{{ stats.clubs }}</b><span>направлений</span></div>
+      <div><b>{{ stats.groups }}</b><span>группы</span></div>
+      <div><b>{{ stats.teachers }}</b><span>педагогов</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Принципы</span>
+        <h2 class="section-title">На чём всё <em>держится</em></h2>
+      </div>
+    </div>
+    <div class="values">
+      <div class="value">
+        <b>Маленькие группы</b>
+        <p>До 10 человек в технических группах и до 8 — в художественных. Педагог успевает подойти к каждому за занятие.</p>
+      </div>
+      <div class="value">
+        <b>Результат каждые 60 минут</b>
+        <p>Не «изучаем тему три месяца», а собираем, рисуем, играем сцену. Ребёнок видит, что у него получилось, уже сегодня.</p>
+      </div>
+      <div class="value">
+        <b>Родитель в курсе</b>
+        <p>Личный кабинет с посещаемостью, абонементом и отчётами педагога. Никаких «позвоните, чтобы узнать».</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container split">
+    <div>
+      <span class="eyebrow">История</span>
+      <h2 class="section-title">Девять лет <em>по шагам</em></h2>
+      <p class="section-desc">Начинали с одной комнаты и двух групп робототехники. Сейчас занимаем весь второй этаж бизнес-центра на Гончарова.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span>2017</span>
+        <b>Открытие центра</b>
+        <p>Две группы робототехники, один педагог и 18 детей.</p>
+      </div>
+      <div class="timeline-item">
+        <span>2019</span>
+        <b>Художественная студия</b>
+        <p>Появились рисование, лепка и первая выставка работ в городской библиотеке.</p>
+      </div>
+      <div class="timeline-item">
+        <span>2022</span>
+        <b>Научная лаборатория</b>
+        <p>Оборудовали кабинет с микроскопами и набором для безопасных опытов.</p>
+      </div>
+      <div class="timeline-item">
+        <span>2024</span>
+        <b>Личный кабинет</b>
+        <p>Расписание, абонементы и отчёты педагогов переехали на сайт.</p>
+      </div>
+      <div class="timeline-item">
+        <span>2026</span>
+        <b>{{ stats.clubs }} направлений</b>
+        <p>{{ stats.groups }} группы, {{ stats.teachers }} педагогов и партнёрство с двумя школами района.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Отзывы</span>
+        <h2 class="section-title">Родители <em>о центре</em></h2>
+      </div>
+      <a class="section-link" href="{% url 'contacts' %}">Оставить отзыв <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+    <div class="grid grid-2">
+      {% for review in reviews %}
+      <figure class="quote">
+        <div class="quote-mark">«</div>
+        <p>{{ review.text }}</p>
+        <footer><b>{{ review.author }}, мама {{ review.child }}</b>{{ review.club }} · занимаемся {{ review.months }} месяцев</footer>
+      </figure>
+      {% empty %}
+      <p class="muted">Отзывы появятся после первых занятий.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

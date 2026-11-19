@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Педагоги центра — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Педагоги детского центра «Умный ребёнок»: профильное образование, опыт работы с детьми и открытые занятия для родителей.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <span>Педагоги</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Педагоги <em>центра</em></h1>
+        <p class="page-desc">Специалисты с профильным образованием и опытом работы с детьми. Показываем тех, кто ведёт занятия в этом полугодии.</p>
+      </div>
+      <a class="btn btn-outline" href="{% url 'contacts' %}">Задать вопрос</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="grid grid-3">
+      {% for teacher in teachers %}
+      <article class="teacher-card">
+        <div class="teacher-photo {{ teacher.tone_class }}">
+          <b>{{ teacher.initials }}</b>
+        </div>
+        <div class="teacher-body">
+          <h3>{{ teacher.full_name }}</h3>
+          <p class="teacher-role">{{ teacher.specialization }}</p>
+          <p>{{ teacher.bio }}</p>
+          <p class="tiny">Опыт работы — {{ teacher.experience_years }} {% if teacher.experience_years == 1 %}год{% elif teacher.experience_years < 5 %}года{% else %}лет{% endif %}</p>
+        </div>
+      </article>
+      {% empty %}
+      <div class="empty">Список педагогов обновляется.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Отбор</span>
+        <h2 class="section-title">Как мы выбираем <em>педагогов</em></h2>
+      </div>
+    </div>
+    <div class="values">
+      <div class="value">
+        <b>Профильное образование</b>
+        <p>Педагогическое или профильное — инженерное, художественное, лингвистическое. Диплом проверяем до собеседования.</p>
+      </div>
+      <div class="value">
+        <b>Открытое занятие</b>
+        <p>Каждый кандидат проводит занятие с детьми. Смотрим, слышит ли он группу и умеет ли объяснять без раздражения.</p>
+      </div>
+      <div class="value">
+        <b>Обратная связь родителям</b>
+        <p>Раз в месяц педагог пишет короткий отчёт: что получилось, над чем работаем, что повторить дома.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-inner">
+        <div>
+          <span class="eyebrow eyebrow--on-dark">Знакомство</span>
+          <h2 class="mt-12">Познакомьтесь с педагогом <em>лично</em></h2>
+          <p>На пробном занятии вы увидите, как строится работа, и сможете задать вопросы до покупки абонемента.</p>
+        </div>
+        <a class="btn btn-accent btn-lg" href="{% url 'booking' %}">Записаться на пробное</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

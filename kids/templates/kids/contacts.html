@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Контакты и схема проезда — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Контакты детского центра «Умный ребёнок»: адрес в Ульяновске, телефон, почта, часы работы и схема проезда.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <span>Контакты</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Контакты <em>и схема проезда</em></h1>
+        <p class="page-desc">Мы на втором этаже бизнес-центра на Гончарова. Вход со двора, рядом парковка на 12 машин.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="contact-grid">
+      <article class="contact-card">
+        <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 14s4.6-4.2 4.6-7.4A4.6 4.6 0 0 0 3.4 6.6C3.4 9.8 8 14 8 14Z"/><circle cx="8" cy="6.6" r="1.7"/></svg></div>
+        <h3>Адрес</h3>
+        <p>г. Ульяновск, ул. Гончарова, д. 32, 2 этаж, офис 201<br>Вход со стороны двора, вывеска «Умный ребёнок».</p>
+      </article>
+      <article class="contact-card">
+        <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5.2 2.4 6.9 6 5.6 7.3a9 9 0 0 0 3.1 3.1L10 9.1l3.6 1.7v2.3c0 .6-.5 1.1-1.1 1.1C6.7 14.2 1.8 9.3 1.8 3.5c0-.6.5-1.1 1.1-1.1h2.3Z"/></svg></div>
+        <h3>Телефон</h3>
+        <p><a href="tel:{{ center.phone_link }}">{{ center.phone }}</a> — ресепшен<br><a href="tel:+79000000000">+7 900 000-00-00</a> — WhatsApp и Telegram</p>
+      </article>
+      <article class="contact-card">
+        <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.8" y="3.4" width="12.4" height="9.2" rx="2"/><path d="m2.4 4.6 5.6 4 5.6-4"/></svg></div>
+        <h3>Почта</h3>
+        <p><a href="mailto:{{ center.email }}">{{ center.email }}</a> — общие вопросы<br><a href="mailto:buh@umny-rebenok.ru">buh@umny-rebenok.ru</a> — документы и оплата</p>
+      </article>
+      <article class="contact-card">
+        <div class="icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg></div>
+        <h3>Часы работы</h3>
+        <p>Пн–Пт: 09:00–20:00<br>Сб: 09:00–18:00<br>Вс: мастер-классы по записи</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container split split--wide-right">
+    <div class="map">
+      <span class="map-pin"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 14s4.6-4.2 4.6-7.4A4.6 4.6 0 0 0 3.4 6.6C3.4 9.8 8 14 8 14Z"/><circle cx="8" cy="6.6" r="1.7"/></svg></span>
+      <div class="map-label">
+        <b>Умный ребёнок</b>
+        <span>ул. Гончарова, 32 · 2 этаж</span>
+      </div>
+    </div>
+    <div class="form-card">
+      <span class="eyebrow">Обратная связь</span>
+      <h2 class="section-title section-title--form">Напишите <em>нам</em></h2>
+      <p class="muted mt-12">Ответим в течение рабочего дня. Если вопрос про конкретного ребёнка, укажите направление и возраст.</p>
+      <form class="mt-28" method="post" action="{% url 'contacts' %}" data-validate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert--error">
+            <div>{% for error in form.non_field_errors %}{{ error }}{% endfor %}</div>
+          </div>
+        {% endif %}
+        <div class="form-grid">
+          {% include "kids/partials/field.html" with field=form.name %}
+          {% include "kids/partials/field.html" with field=form.phone %}
+          {% include "kids/partials/field.html" with field=form.topic extra_class="field--full" %}
+          {% include "kids/partials/field.html" with field=form.message extra_class="field--full" %}
+          {% include "kids/partials/field.html" with field=form.consent %}
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-accent" type="submit">Отправить</button>
+          <span class="hint">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container">
+    <div class="split">
+      <div>
+        <span class="eyebrow">Документы</span>
+        <h2 class="section-title">Реквизиты <em>и договор</em></h2>
+        <p class="section-desc">Договор заключаем на бумаге или через личный кабинет. Все документы можно получить на ресепшене.</p>
+        <div class="mt-28">
+          <a class="btn btn-outline" href="{% url 'contacts' %}"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 1.8h5l3 3v9.4H4z"/><path d="M9 1.8v3.2h3"/></svg> Образец договора</a>
+        </div>
+      </div>
+      <div class="panel">
+        <dl class="requisites">
+          <dt>Полное название</dt><dd>{{ center.legal }}</dd>
+          <dt>ИНН / КПП</dt><dd>{{ center.inn }} / 732501001</dd>
+          <dt>ОГРН</dt><dd>1177325004321</dd>
+          <dt>Юридический адрес</dt><dd>432017, г. Ульяновск, ул. Гончарова, д. 32</dd>
+          <dt>Банк</dt><dd>ПАО «Сбербанк», р/с 40702810100000012345</dd>
+          <dt>Директор</dt><dd>Хасанзянов М. Р.</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="alert alert--info mt-28">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6 14 7.6 9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6z"/></svg>
+      <div>
+        <b>Как добраться</b>
+        От остановки «Гончарова» — 3 минуты пешком. Автобусы 2, 4, 12, 46, троллейбус 1. Парковка во дворе дома, въезд с улицы Ленина.
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
