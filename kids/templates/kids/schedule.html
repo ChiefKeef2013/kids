@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Расписание занятий — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Расписание занятий детского центра «Умный ребёнок» по дням недели: время, педагоги, кабинеты и свободные места в группах.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <span>Расписание</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Расписание <em>занятий</em></h1>
+        <p class="page-desc">Занятия идут с понедельника по субботу. Выберите день или профиль — покажем только подходящие группы.</p>
+      </div>
+      <a class="btn btn-outline" href="{% url 'booking' %}">Записаться</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="catalog-toolbar">
+      <div class="chips">
+        <a class="chip{% if not day %} is-active{% endif %}" href="{% url 'schedule' %}{% if direction %}?direction={{ direction }}{% endif %}">Все дни</a>
+        {% for value, label in day_choices %}
+        <a class="chip{% if day == value|stringformat:'s' %} is-active{% endif %}" href="{% url 'schedule' %}?day={{ value }}{% if direction %}&amp;direction={{ direction }}{% endif %}">{{ label }}</a>
+        {% endfor %}
+      </div>
+      <p class="result-count">{{ total }} {% if total == 1 %}занятие{% elif total < 5 %}занятия{% else %}занятий{% endif %}</p>
+    </div>
+
+    <form class="schedule-filter" method="get" action="{% url 'schedule' %}">
+      <label class="visually-hidden" for="schedule-direction">Профиль направления</label>
+      <select class="select" id="schedule-direction" name="direction">
+        <option value="">Все профили</option>
+        {% for value, label in directions %}
+        <option value="{{ value }}"{% if direction == value %} selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      {% if day %}<input type="hidden" name="day" value="{{ day }}">{% endif %}
+      <button class="btn btn-outline btn-sm" type="submit">Фильтровать</button>
+    </form>
+
+    {% for group in days %}
+    <div class="schedule-day">
+      <h2 class="schedule-day__title">{{ group.label }}</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th>Время</th><th>Направление и группа</th><th>Возраст</th><th>Педагог</th><th>Кабинет</th><th>Места</th></tr>
+          </thead>
+          <tbody>
+            {% for lesson in group.items %}
+            <tr>
+              <td class="num strong">{{ lesson.time_range }}</td>
+              <td><a href="{{ lesson.group.club.get_absolute_url }}">{{ lesson.group.club.name }}</a> <span class="tiny">{{ lesson.group.title }}</span></td>
+              <td>{{ lesson.group.age_range }} лет</td>
+              <td>{% with teacher=lesson.group.teacher %}{% if teacher %}{{ teacher.full_name }}{% else %}—{% endif %}{% endwith %}</td>
+              <td>{{ lesson.room.number|default:"—" }}</td>
+              {% with status=lesson.group.places_status %}
+              <td><span class="status status--{% if status.0 == 'free' %}ok{% elif status.0 == 'few' %}few{% else %}full{% endif %}">{{ status.1 }}</span></td>
+              {% endwith %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% empty %}
+    <div class="empty">По выбранным условиям занятий нет. <a class="link-arrow" href="{% url 'schedule' %}">Показать всё расписание</a></div>
+    {% endfor %}
+
+    <p class="hint mt-20">Расписание может меняться из-за праздников и карантина. Актуальные изменения приходят в личный кабинет и в группу центра.</p>
+  </div>
+</section>
+
+{% if events %}
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Выходные</span>
+        <h2 class="section-title">Мастер-классы <em>выходного дня</em></h2>
+        <p class="section-desc">Короткие занятия на 1,5–2 часа, куда можно прийти без абонемента и без подготовки.</p>
+      </div>
+      <a class="section-link" href="{% url 'master_classes' %}">Все мастер-классы <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+    <div class="grid grid-3">
+      {% for event in events %}
+      <article class="event-card">
+        <div class="event-cover {{ event.cover_class }}"><b>{{ event.date|date:"j" }}</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">{{ event.date|date:"j E" }} · {{ event.start_time|time:"H:i" }}</span>
+            <h3 class="mt-12">{{ event.title }}</h3>
+            <p>{{ event.summary }}</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> {{ event.time_range }}</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> {{ event.age_range }}</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>{{ event.price }} ₽</b>
+            <a class="btn btn-outline btn-sm" href="{% url 'booking' %}">Записаться</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

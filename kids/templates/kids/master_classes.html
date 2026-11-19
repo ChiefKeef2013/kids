@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Мастер-классы — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Мастер-классы выходного дня для детей 4–12 лет: робототехника, рисование, наука и театр. Все материалы включены, абонемент не нужен.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <span>Мастер-классы</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Мастер-<em>классы</em></h1>
+        <p class="page-desc">Короткие занятия на выходных: 1,5–2 часа, все материалы включены, абонемент не нужен. Для детей 4–12 лет.</p>
+      </div>
+      <a class="btn btn-accent" href="{% url 'booking' %}">Записаться</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="alert alert--info">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6 14 7.6 9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6z"/></svg>
+      <div>
+        <b>Как это устроено</b>
+        Приходите за 10 минут до начала, сменная обувь не нужна. Материалы и фартуки выдаём на месте. Если ребёнок застеснялся, родитель может остаться в зале.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="catalog-toolbar">
+      <div class="chips">
+        <a class="chip{% if not period %} is-active{% endif %}" href="{% url 'master_classes' %}">Все</a>
+        <a class="chip{% if period == 'weekday' %} is-active{% endif %}" href="{% url 'master_classes' %}?period=weekday">Будни</a>
+        <a class="chip{% if period == 'weekend' %} is-active{% endif %}" href="{% url 'master_classes' %}?period=weekend">Выходные</a>
+      </div>
+      <p class="result-count">{{ events|length }} {% if events|length == 1 %}мастер-класс{% elif events|length < 5 %}мастер-класса{% else %}мастер-классов{% endif %}</p>
+    </div>
+
+    <div class="grid grid-3">
+      {% for event in events %}
+      <article class="event-card">
+        <div class="event-cover {{ event.cover_class }}"><b>{{ event.date|date:"j" }}</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">{{ event.date|date:"j E" }} · {{ event.date|date:"l" }}</span>
+            <h3 class="mt-12">{{ event.title }}</h3>
+            <p>{{ event.summary }}</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> {{ event.time_range }}</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> {{ event.age_range }}</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>{{ event.price }} ₽</b>
+            {% if event.is_open %}
+            <a class="btn btn-outline btn-sm" href="{% url 'booking' %}">Записаться</a>
+            {% else %}
+            <span class="status status--full">Мест нет</span>
+            {% endif %}
+          </div>
+          <p class="tiny event-seats">Свободно {{ event.free_seats }} из {{ event.seats }} мест · {{ event.teacher.full_name }}</p>
+        </div>
+      </article>
+      {% empty %}
+      <div class="empty">Пока нет запланированных мастер-классов. <a class="link-arrow" href="{% url 'contacts' %}">Предложите тему</a></div>
+      {% endfor %}
+    </div>
+
+    <div class="empty mt-28">
+      Не нашли подходящий формат? <a class="link-arrow" href="{% url 'contacts' %}">Предложите свою тему <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Порядок</span>
+        <h2 class="section-title">Что будет <em>в субботу</em></h2>
+        <p class="section-desc">Мастер-классы ведут те же педагоги, что и основные группы. Поэтому после короткого занятия легко перейти в кружок.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>Запись и оплата</h3>
+        <p>Оставляете заявку на сайте, администратор подтверждает место и присылает ссылку на оплату.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>Занятие 1,5–2 часа</h3>
+        <p>Короткая теория, основная практика и результат, который ребёнок забирает с собой.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>Фото и обратная связь</h3>
+        <p>Присылаем фотографии с занятия и советуем, в какую группу пойти дальше.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-inner">
+        <div>
+          <span class="eyebrow eyebrow--on-dark">Первый шаг</span>
+          <h2 class="mt-12">Попробуйте формат <em>без абонемента</em></h2>
+          <p>Один мастер-класс — это знакомство с педагогом и центром. Дальше можно выбрать регулярную группу.</p>
+        </div>
+        <a class="btn btn-accent btn-lg" href="{% url 'booking' %}">Записаться</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
