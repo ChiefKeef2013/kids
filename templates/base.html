@@ -1,0 +1,145 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Детский центр «Умный ребёнок»{% endblock %}</title>
+<meta name="description" content="{% block description %}Детский развивающий центр «Умный ребёнок» в Ульяновске: кружки и мастер-классы для детей 3–14 лет.{% endblock %}">
+<link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="{% url 'home' %}">
+      <span class="brand-mark">УР</span>
+      <span>
+        <span class="brand-name">Умный ребёнок</span>
+        <span class="brand-sub">Детский центр · Ульяновск</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="site-nav" aria-label="Основная навигация">
+      <a href="{% url 'clubs' %}"{% if request.resolver_match.url_name == 'clubs' or request.resolver_match.url_name == 'club' %} class="is-active" aria-current="page"{% endif %}>Направления</a>
+      <a href="{% url 'schedule' %}"{% if request.resolver_match.url_name == 'schedule' %} class="is-active" aria-current="page"{% endif %}>Расписание</a>
+      <a href="{% url 'master_classes' %}"{% if request.resolver_match.url_name == 'master_classes' %} class="is-active" aria-current="page"{% endif %}>Мастер-классы</a>
+      <a href="{% url 'teachers' %}"{% if request.resolver_match.url_name == 'teachers' %} class="is-active" aria-current="page"{% endif %}>Педагоги</a>
+      <a href="{% url 'pricing' %}"{% if request.resolver_match.url_name == 'pricing' %} class="is-active" aria-current="page"{% endif %}>Абонементы</a>
+      <a href="{% url 'about' %}"{% if request.resolver_match.url_name == 'about' %} class="is-active" aria-current="page"{% endif %}>О центре</a>
+      <a href="{% url 'contacts' %}"{% if request.resolver_match.url_name == 'contacts' %} class="is-active" aria-current="page"{% endif %}>Контакты</a>
+      <div class="nav-cta">
+        <a class="btn btn-primary btn-sm" href="{% url 'booking' %}">Записаться</a>
+        {% if user.is_authenticated %}
+        <a class="btn btn-ghost btn-sm" href="{% url 'account' %}">Кабинет</a>
+        {% else %}
+        <a class="btn btn-ghost btn-sm" href="{% url 'login' %}">Войти</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <button class="search-toggle" type="button" aria-label="Поиск по сайту" aria-controls="search-modal">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 3.5 3.5"/></svg>
+      </button>
+      {% if user.is_authenticated %}
+        <a class="btn btn-ghost btn-sm" href="{% url 'account' %}">Кабинет</a>
+      {% else %}
+        <a class="btn btn-ghost btn-sm" href="{% url 'login' %}">Войти</a>
+      {% endif %}
+      <a class="header-phone" href="tel:{{ center.phone_link }}">{{ center.phone }}<span>{{ center.hours }}</span></a>
+      <a class="btn btn-primary btn-sm" href="{% url 'booking' %}">Записаться</a>
+    </div>
+  </div>
+</header>
+
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
+  <div class="search-modal__box">
+    <div class="search-modal__head">
+      <h2 class="search-modal__title" id="search-title">Поиск по сайту</h2>
+      <button class="search-modal__close" type="button" aria-label="Закрыть поиск">×</button>
+    </div>
+    <form class="search-modal__form" action="{% url 'search' %}" method="get" role="search">
+      <label class="visually-hidden" for="site-search">Поисковый запрос</label>
+      <input class="input" id="site-search" type="search" name="q" placeholder="Направление, педагог, мастер-класс" autocomplete="off">
+      <button class="btn btn-primary" type="submit">Найти</button>
+    </form>
+    <div class="search-modal__results" id="search-results" aria-live="polite"></div>
+  </div>
+</div>
+
+<main id="main">
+  {% if messages %}
+  <div class="container messages">
+    {% for message in messages %}
+      <div class="alert alert--{{ message.tags }}" role="status">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="{% url 'home' %}">
+          <span class="brand-mark">УР</span>
+          <span>
+            <span class="brand-name">Умный ребёнок</span>
+            <span class="brand-sub">Детский центр · Ульяновск</span>
+          </span>
+        </a>
+        <p class="footer-note">Кружки и мастер-классы для детей 3–14 лет. Небольшие группы, внимательные педагоги и расписание, которое удобно родителям.</p>
+      </div>
+      <div>
+        <p class="footer-title">Разделы</p>
+        <div class="footer-links">
+          <a href="{% url 'clubs' %}">Направления</a>
+          <a href="{% url 'schedule' %}">Расписание</a>
+          <a href="{% url 'master_classes' %}">Мастер-классы</a>
+          <a href="{% url 'teachers' %}">Педагоги</a>
+          <a href="{% url 'pricing' %}">Абонементы</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Родителям</p>
+        <div class="footer-links">
+          <a href="{% url 'booking' %}">Запись на занятие</a>
+          <a href="{% url 'account' %}">Личный кабинет</a>
+          <a href="{% url 'contacts' %}">Контакты и схема проезда</a>
+          <a href="{% url 'about' %}">О центре</a>
+          <a href="{% url 'contacts' %}">Помощь</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Новости центра</p>
+        <p class="footer-note footer-note--tight">Анонсы мастер-классов, расписание на месяц и свободные места в группах — раз в две недели.</p>
+        <form class="footer-form" action="{% url 'newsletter' %}" method="post">
+          {% csrf_token %}
+          <input class="input" type="email" name="email" placeholder="Ваш e-mail" aria-label="Ваш e-mail" required>
+          <button class="btn" type="submit">Подписаться</button>
+        </form>
+        <div class="footer-links footer-links--gap">
+          <a href="tel:{{ center.phone_link }}">{{ center.phone }}</a>
+          <a href="mailto:{{ center.email }}">{{ center.email }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 {{ center.legal }} · ИНН {{ center.inn }}</span>
+      <span>Политика конфиденциальности · Договор оферты</span>
+    </div>
+  </div>
+</footer>
+
+<script src="{% static 'js/main.js' %}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
