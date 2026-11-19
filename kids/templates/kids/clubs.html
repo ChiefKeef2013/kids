@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Направления — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Каталог направлений детского центра «Умный ребёнок»: кружки и секции для детей 3–14 лет с фильтром по возрасту и стоимостью.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <span>Направления</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Направления и <em>кружки</em></h1>
+        <p class="page-desc">Направления для детей 3–14 лет. Фильтруйте по возрасту и профилю — или посмотрите всё расписание.</p>
+      </div>
+      <a class="btn btn-outline" href="{% url 'schedule' %}">Смотреть расписание</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container catalog-layout" data-catalog data-api="{% url 'api_clubs' %}">
+
+    <div class="filters-bar">
+      <a class="btn btn-outline btn-sm" href="#catalog-filters">Фильтры{% if active_filters %} · {{ active_filters }}{% endif %}</a>
+      <a class="result-count" href="{% url 'clubs' %}">Сбросить</a>
+    </div>
+
+    <aside class="filters">
+      <form id="catalog-filters" class="filters-form" method="get" action="{% url 'clubs' %}" data-catalog-filters>
+        <div class="filter-group">
+          <p class="filter-title">Возраст</p>
+          <label class="visually-hidden" for="filter-age">Возраст ребёнка</label>
+          <select class="select" id="filter-age" name="age">
+            <option value="">Любой возраст</option>
+            <option value="3-5"{% if age == "3-5" %} selected{% endif %}>3–5 лет</option>
+            <option value="6-8"{% if age == "6-8" %} selected{% endif %}>6–8 лет</option>
+            <option value="9-11"{% if age == "9-11" %} selected{% endif %}>9–11 лет</option>
+            <option value="12-14"{% if age == "12-14" %} selected{% endif %}>12–14 лет</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <p class="filter-title">Направление</p>
+          <label class="visually-hidden" for="filter-direction">Профиль направления</label>
+          <select class="select" id="filter-direction" name="direction">
+            <option value="">Все профили</option>
+            {% for value, label in directions %}
+            <option value="{{ value }}"{% if direction == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="filter-group">
+          <p class="filter-title">Сортировка</p>
+          <label class="visually-hidden" for="filter-sort">Сортировка</label>
+          <select class="select" id="filter-sort" name="sort">
+            <option value="order"{% if sort == "order" %} selected{% endif %}>По порядку</option>
+            <option value="price"{% if sort == "price" %} selected{% endif %}>Сначала дешевле</option>
+            <option value="age"{% if sort == "age" %} selected{% endif %}>По возрасту</option>
+          </select>
+        </div>
+        <button class="btn btn-accent btn-block mt-20 filter-apply" type="submit" data-catalog-submit>Показать направления</button>
+        <a class="btn btn-ghost btn-block mt-12" href="{% url 'clubs' %}">Сбросить фильтры</a>
+      </form>
+    </aside>
+
+    <div>
+      <div class="catalog-search">
+        <label for="catalog-search">Поиск по названию</label>
+        <input class="input" id="catalog-search" type="search" name="search" form="catalog-filters" value="{{ search }}" placeholder="Например, робототехника" data-catalog-search autocomplete="off">
+      </div>
+
+      <div class="catalog-toolbar">
+        <div class="chips">
+          <a class="chip{% if not age %} is-active{% endif %}" href="{% url 'clubs' %}">Все</a>
+          <a class="chip{% if age == "3-5" %} is-active{% endif %}" href="{% url 'clubs' %}?age=3-5">3–5 лет</a>
+          <a class="chip{% if age == "6-8" %} is-active{% endif %}" href="{% url 'clubs' %}?age=6-8">6–8 лет</a>
+          <a class="chip{% if age == "9-11" %} is-active{% endif %}" href="{% url 'clubs' %}?age=9-11">9–11 лет</a>
+          <a class="chip{% if age == "12-14" %} is-active{% endif %}" href="{% url 'clubs' %}?age=12-14">12–14 лет</a>
+          <a class="chip" href="{% url 'master_classes' %}">Мастер-классы</a>
+        </div>
+        <p class="result-count">
+          <span data-catalog-count>{{ page_obj.paginator.count }} {% if page_obj.paginator.count == 1 %}направление{% elif page_obj.paginator.count < 5 %}направления{% else %}направлений{% endif %}</span>
+          · <span data-catalog-groups>{{ groups_total }} {% if groups_total == 1 %}группа{% elif groups_total < 5 %}группы{% else %}групп{% endif %}</span>
+        </p>
+      </div>
+
+      <div class="grid grid-3" data-catalog-grid id="catalog-grid">
+        {% include "kids/partials/club_cards.html" %}
+      </div>
+
+      {% if page_obj.paginator.num_pages > 1 %}
+      <nav class="pagination" aria-label="Страницы каталога">
+        {% if page_obj.has_previous %}
+        <a href="{% querystring page=page_obj.previous_page_number %}" aria-label="Предыдущая страница"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 8h-11M7 3.5 2.5 8 7 12.5"/></svg></a>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+          <a class="is-active" href="{% querystring page=num %}" aria-current="page">{{ num }}</a>
+          {% else %}
+          <a href="{% querystring page=num %}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <a href="{% querystring page=page_obj.next_page_number %}" aria-label="Следующая страница"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

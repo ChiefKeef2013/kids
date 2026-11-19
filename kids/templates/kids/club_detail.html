@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}{{ club.name }} — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}{{ club.tagline }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="{% url 'home' %}">Главная</a> <span>/</span> <a href="{% url 'clubs' %}">Направления</a> <span>/</span> <span>{{ club.name }}</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">{{ club.name }}</h1>
+        <p class="page-desc">{{ club.tagline }}</p>
+      </div>
+      {% with tag=club.places_tag %}<span class="tag {{ tag.0|default:"tag--sage" }}">{{ tag.1 }} · {{ club.groups_count }} {% if club.groups_count == 1 %}группа{% elif club.groups_count < 5 %}группы{% else %}групп{% endif %}</span>{% endwith %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container club-layout">
+    <div>
+      <div class="club-hero">
+        <div class="club-hero-cover {{ club.cover_class }}"><span>{{ club.order|stringformat:"02d" }}</span></div>
+        <div class="club-facts">
+          <div class="fact"><span>Возраст</span><b>{{ club.age_range }}</b></div>
+          <div class="fact"><span>Группа</span><b>до {{ groups.first.capacity|default:"10" }} человек</b></div>
+          <div class="fact"><span>Занятия</span><b>{{ club.lessons_per_week }} {% if club.lessons_per_week == 1 %}раз{% else %}раза{% endif %} в неделю</b></div>
+          <div class="fact"><span>Длительность</span><b>60 минут</b></div>
+        </div>
+      </div>
+
+      <div class="prose">
+        <h2>О программе</h2>
+        {{ club.description|linebreaks }}
+
+        <h2>Чему научится ребёнок</h2>
+        <ul class="checklist">
+          {% for skill in club.skills_list %}<li>{{ skill }}</li>{% endfor %}
+        </ul>
+
+        <h2>Как проходит занятие</h2>
+        {{ club.format_text|linebreaks }}
+
+        {% if club.groups.first.teacher %}
+        <h2>Преподаватель</h2>
+        <div class="mini-author">
+          <span class="avatar">{{ club.groups.first.teacher.initials }}</span>
+          <div>
+            <b>{{ club.groups.first.teacher.full_name }}</b>
+            <small>{{ club.groups.first.teacher.specialization }} · опыт {{ club.groups.first.teacher.experience_years }} лет</small>
+          </div>
+          <a class="btn btn-outline btn-sm" href="{% url 'teachers' %}">Профиль</a>
+        </div>
+        {% endif %}
+
+        <h2>Расписание групп</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Группа</th><th>Дни</th><th>Время</th><th>Кабинет</th><th>Места</th></tr>
+            </thead>
+            <tbody>
+              {% for group in groups %}
+              <tr>
+                <td class="strong">{{ group.title }}</td>
+                <td>{% for lesson in group.schedules.all %}{{ lesson.day_short }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                <td class="num">{% for lesson in group.schedules.all %}{{ lesson.time_range }}{% if not forloop.last %}<br>{% endif %}{% endfor %}</td>
+                <td>{{ group.room.number|default:"—" }}</td>
+                {% with status=group.places_status %}
+                <td><span class="status status--{% if status.0 == 'free' %}ok{% elif status.0 == 'few' %}few{% else %}full{% endif %}">{{ status.1 }}</span></td>
+                {% endwith %}
+              </tr>
+              {% empty %}
+              <tr><td colspan="5">Расписание групп уточняется — позвоните администратору.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <aside class="booking-card">
+      {% with tag=club.places_tag %}<span class="tag {{ tag.0|default:"tag--sage" }}">{{ tag.1 }}</span>{% endwith %}
+      <div class="price"><b>{{ club.price }} ₽</b><span>/ месяц</span></div>
+      <p class="booking-note mt-12">Пробное занятие — бесплатно. Абонемент действует 30 дней с первого занятия, пропуски переносятся по справке.</p>
+      <hr>
+      <div class="field">
+        <label for="club-group">Группа</label>
+        <select class="select" id="club-group">
+          {% for group in groups %}
+          <option value="{{ group.pk }}">{{ group.title }} · {{ group.age_range }} лет</option>
+          {% endfor %}
+        </select>
+      </div>
+      <a class="btn btn-accent btn-block mt-20" href="{% url 'booking' %}?club={{ club.slug }}">Записаться на пробное</a>
+      <a class="btn btn-outline btn-block mt-12" href="{% url 'contacts' %}">Задать вопрос</a>
+      <p class="booking-note mt-12">Оплата после пробного занятия. Абонемент можно вернуть в течение 14 дней, если занятия не начались.</p>
+    </aside>
+  </div>
+</section>
+
+{% if similar %}
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Рядом</span>
+        <h2 class="section-title">Другие <em>направления</em></h2>
+      </div>
+      <a class="section-link" href="{% url 'clubs' %}">Все направления <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+    <div class="grid grid-3">
+      {% for club in similar %}
+      <article class="club-card">
+        <a class="club-cover {{ club.cover_class }}" href="{{ club.get_absolute_url }}" aria-label="{{ club.name }}">
+          <span>{{ club.order|stringformat:"02d" }}</span>
+        </a>
+        <div class="club-body">
+          <div class="club-topline"><span class="tag">{{ club.age_range }}</span></div>
+          <h3><a href="{{ club.get_absolute_url }}">{{ club.name }}</a></h3>
+          <p>{{ club.tagline }}</p>
+          <div class="club-meta">
+            <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> {{ club.lessons_per_week }} {% if club.lessons_per_week == 1 %}раз{% else %}раза{% endif %} в неделю</span>
+            <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.2" cy="5.8" r="2.4"/><path d="M2.2 13c0-2.2 1.8-3.6 4-3.6s4 1.4 4 3.6"/><path d="M10.8 4.1a2.4 2.4 0 0 1 0 4.3M11.8 9.7c1.3.4 2.2 1.5 2.2 3.3"/></svg> до {{ club.groups.first.capacity|default:"10" }} человек</span>
+            <span class="club-price">{{ club.price }} ₽</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

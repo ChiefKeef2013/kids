@@ -1,0 +1,24 @@
+{% for club in page_obj %}
+<article class="club-card">
+  <a class="club-cover {{ club.cover_class }}" href="{{ club.get_absolute_url }}" aria-label="{{ club.name }}">
+    <span>{{ club.order|stringformat:"02d" }}</span>
+  </a>
+  <div class="club-body">
+    <div class="club-topline">
+      <span class="tag">{{ club.age_range }}</span>
+      {% with tag=club.places_tag %}{% if tag.0 %}<span class="tag {{ tag.0 }}">{{ tag.1 }}</span>{% endif %}{% endwith %}
+    </div>
+    <h3><a href="{{ club.get_absolute_url }}">{{ club.name }}</a></h3>
+    <p>{{ club.tagline }}</p>
+    <div class="club-meta">
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> {{ club.lessons_per_week }} {% if club.lessons_per_week == 1 %}раз{% else %}раза{% endif %} в неделю</span>
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.2" cy="5.8" r="2.4"/><path d="M2.2 13c0-2.2 1.8-3.6 4-3.6s4 1.4 4 3.6"/><path d="M10.8 4.1a2.4 2.4 0 0 1 0 4.3M11.8 9.7c1.3.4 2.2 1.5 2.2 3.3"/></svg> до {{ club.groups.first.capacity|default:"10" }} человек</span>
+      <span class="club-price">{{ club.price }} ₽</span>
+    </div>
+  </div>
+</article>
+{% empty %}
+<div class="empty">
+  Под выбранные фильтры ничего не нашлось. <a class="link-arrow" href="{% url 'clubs' %}">Сбросить фильтры</a>
+</div>
+{% endfor %}
