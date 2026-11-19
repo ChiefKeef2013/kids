@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Главная — Детский центр «Умный ребёнок»{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Детский центр · Ульяновск</span>
+      <h1>Растём <em>вместе</em> с интересом</h1>
+      <p class="hero-lead">Кружки, мастер-классы и подготовка к школе для детей 3–14 лет. Группы до 10 человек, педагоги с профильным образованием и бесплатное пробное занятие.</p>
+      <div class="hero-actions">
+        <a class="btn btn-accent btn-lg" href="{% url 'booking' %}">Записаться на пробное</a>
+        <a class="btn btn-outline btn-lg" href="{% url 'clubs' %}">Все направления</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>{{ stats.clubs }}</b><span>направлений</span></div>
+        <div class="stat"><b>{{ stats.groups }}</b><span>группы</span></div>
+        <div class="stat"><b>{{ stats.teachers }}</b><span>педагогов</span></div>
+        <div class="stat"><b>9</b><span>лет с детьми</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-panel"><div class="hero-panel-word">УР</div></div>
+      <span class="badge-free">Идёт набор</span>
+      <div class="lesson-card">
+        <div class="lesson-card-head">
+          <span class="lesson-card-title">Расписание на {{ preview_day|date:"j E" }}</span>
+          <span class="tag">{{ preview_day|date:"D" }}</span>
+        </div>
+        {% for lesson in day_schedule %}
+        <div class="lesson-row">
+          <time>{{ lesson.start_time|time:"H:i" }}</time>
+          <div><b>{{ lesson.group.club.name }}</b><small>{{ lesson.group.age_range }} лет · {{ lesson.group.teacher.full_name }}</small></div>
+          <span class="room">{{ lesson.room.number }}</span>
+        </div>
+        {% endfor %}
+        <a class="link-arrow mt-12" href="{% url 'schedule' %}">Всё расписание <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+      </div>
+      {% if next_event %}
+      <div class="float-card">
+        <span class="tag tag--accent">Мастер-класс</span>
+        <b>{{ next_event.title }}</b>
+        <p>{{ next_event.date|date:"j E" }}, {{ next_event.start_time|time:"H:i" }} · {{ next_event.age_range }}</p>
+        <div class="places">Осталось {{ next_event.free_seats }} места</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Направления</span>
+        <h2 class="section-title">Чем занимаются <em>дети</em></h2>
+        <p class="section-desc">Шесть основных направлений и два сезонных курса. Можно ходить на одно или совмещать — расписание собираем без накладок.</p>
+      </div>
+      <a class="section-link" href="{% url 'clubs' %}">Все {{ stats.clubs }} направлений <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+    <div class="grid grid-3">
+      {% for club in clubs %}
+      <a class="direction-card" href="{{ club.get_absolute_url }}">
+        <span class="direction-num">{{ forloop.counter|stringformat:"02d" }} · {{ club.age_range }}</span>
+        <span class="arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span>
+        <h3>{{ club.name }}</h3>
+        <p>{{ club.tagline }}</p>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Запись</span>
+        <h2 class="section-title">Как попасть <em>на занятие</em></h2>
+        <p class="section-desc">От заявки до первого занятия — обычно два дня. Пробное занятие бесплатное, приходить можно без подготовки.</p>
+      </div>
+      <a class="section-link" href="{% url 'booking' %}">Оставить заявку</a>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>Выбираете направление</h3>
+        <p>Смотрите карточки кружков, возрастные группы и свободные места в расписании.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>Оставляете заявку</h3>
+        <p>Заполняете форму на сайте или звоните. Администратор перезвонит в течение рабочего дня.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>Приходите на пробное</h3>
+        <p>Смотрите занятие, знакомитесь с педагогом и решаете, подходит ли группа ребёнку.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Популярное</span>
+        <h2 class="section-title">Группы, куда идут <em>чаще всего</em></h2>
+        <p class="section-desc">Свободные места обновляются каждую неделю. В популярных группах бывает лист ожидания.</p>
+      </div>
+      <a class="section-link" href="{% url 'clubs' %}">Смотреть все <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+    <div class="grid grid-3">
+      {% for club in clubs|slice:":3" %}
+      <article class="club-card">
+        <a class="club-cover {{ club.cover_class }}" href="{{ club.get_absolute_url }}" aria-label="{{ club.name }}">
+          <span>{{ forloop.counter|stringformat:"02d" }}</span>
+        </a>
+        <div class="club-body">
+          <div class="club-topline">
+            <span class="tag">{{ club.age_range }}</span>
+            {% with tag=club.places_tag %}{% if tag.0 %}<span class="tag {{ tag.0 }}">{{ tag.1 }}</span>{% endif %}{% endwith %}
+          </div>
+          <h3><a href="{{ club.get_absolute_url }}">{{ club.name }}</a></h3>
+          <p>{{ club.tagline }}</p>
+          <div class="club-meta">
+            <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> {{ club.lessons_per_week }} {% if club.lessons_per_week == 1 %}раз{% else %}раза{% endif %} в неделю</span>
+            <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.2" cy="5.8" r="2.4"/><path d="M2.2 13c0-2.2 1.8-3.6 4-3.6s4 1.4 4 3.6"/><path d="M10.8 4.1a2.4 2.4 0 0 1 0 4.3M11.8 9.7c1.3.4 2.2 1.5 2.2 3.3"/></svg> до {{ club.groups.first.capacity }} человек</span>
+            <span class="club-price">{{ club.price }} ₽</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Педагоги</span>
+        <h2 class="section-title">Кто занимается <em>с детьми</em></h2>
+        <p class="section-desc">В центре {{ stats.teachers }} педагогов. У каждого профильное образование и опыт работы с детьми от трёх лет.</p>
+      </div>
+      <a class="section-link" href="{% url 'teachers' %}">Все педагоги <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+    <div class="grid grid-3">
+      {% for teacher in teachers|slice:":3" %}
+      <article class="teacher-card">
+        <div class="teacher-photo {{ teacher.tone_class }}">
+          <b>{{ teacher.initials }}</b>
+        </div>
+        <div class="teacher-body">
+          <h3>{{ teacher.full_name }}</h3>
+          <p class="teacher-role">{{ teacher.specialization }}</p>
+          <p>{{ teacher.bio }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Отзывы</span>
+        <h2 class="section-title">Что говорят <em>родители</em></h2>
+      </div>
+      <a class="section-link" href="{% url 'contacts' %}">Оставить отзыв <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+    <div class="grid grid-2">
+      {% for review in reviews %}
+      <figure class="quote">
+        <div class="quote-mark">«</div>
+        <p>{{ review.text }}</p>
+        <footer><b>{{ review.author }}, мама {{ review.child }}</b>{{ review.club }} · занимаемся {{ review.months }} месяцев</footer>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-inner">
+        <div>
+          <span class="eyebrow eyebrow--on-dark">Первый шаг</span>
+          <h2 class="mt-12">Приходите на <em>пробное</em> занятие</h2>
+          <p>Покажем центр, познакомим с педагогом и подберём группу по возрасту и интересам. Записываться можно в один клик.</p>
+        </div>
+        <a class="btn btn-accent btn-lg" href="{% url 'booking' %}">Выбрать время</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

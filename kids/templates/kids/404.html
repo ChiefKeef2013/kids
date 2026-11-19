@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Страница не найдена — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}Такой страницы нет. Вернитесь на главную или посмотрите расписание занятий детского центра «Умный ребёнок».{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <div class="container">
+    <div class="error-code">404</div>
+    <h1>Такой страницы нет</h1>
+    <p>Возможно, ссылка устарела или в адресе опечатка. Ничего страшного — вернитесь на главную или посмотрите расписание.</p>
+    <div class="error-actions">
+      <a class="btn btn-primary btn-lg" href="{% url 'home' %}">На главную</a>
+      <a class="btn btn-outline btn-lg" href="{% url 'schedule' %}">Расписание занятий</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Куда дальше</span>
+        <h2 class="section-title">Популярные <em>разделы</em></h2>
+      </div>
+    </div>
+    <div class="grid grid-3">
+      <a class="direction-card" href="{% url 'clubs' %}">
+        <span class="direction-num">01 · направления</span>
+        <span class="arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span>
+        <h3>Все кружки</h3>
+        <p>Возраст, формат, стоимость и свободные места в группах.</p>
+      </a>
+      <a class="direction-card" href="{% url 'booking' %}">
+        <span class="direction-num">02 · 0 ₽</span>
+        <span class="arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span>
+        <h3>Записаться на пробное</h3>
+        <p>Оставьте заявку — администратор перезвонит в течение дня.</p>
+      </a>
+      <a class="direction-card" href="{% url 'contacts' %}">
+        <span class="direction-num">03 · Пн–Сб</span>
+        <span class="arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span>
+        <h3>Контакты</h3>
+        <p>Адрес, телефон, схема проезда и часы работы центра.</p>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
