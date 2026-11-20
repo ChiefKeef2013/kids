@@ -8,7 +8,7 @@ Django-версия макетов из занятия 6 (вариант 22).
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install "django==6.1.3"
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe manage.py migrate
 .\.venv\Scripts\python.exe manage.py seed_demo
 .\.venv\Scripts\python.exe manage.py runserver
@@ -34,8 +34,13 @@ kids/
 templates/base.html  общий каркас: шапка, меню, поиск, подвал
 static/css/style.css стили UI-kit занятия 6 + служебные классы
 static/js/main.js    бургер, живой поиск, фильтр каталога, валидация форм
+static/fonts/        локальные woff2 (Hedvig Letters Serif, Inter)
 static/img/          favicon
-docs/                скриншоты и отчёты валидаторов
+docs/                скриншоты, отчёты валидаторов и Lighthouse
+docs/screenshots/    все страницы в 1440 и 375 px
+docs/validators/     HTML-снимки страниц и отчёты W3C
+docs/lighthouse/     отчёты Lighthouse (JSON + HTML)
+docs/compare/        сравнение страниц с макетами занятия 6
 ```
 
 ## Страницы
