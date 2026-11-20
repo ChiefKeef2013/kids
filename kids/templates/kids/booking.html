@@ -51,7 +51,7 @@
       <span class="tag tag--sage">Пробное — 0 ₽</span>
       {% if featured %}
       <p class="price-name mt-12">{{ featured.name }}</p>
-      <p class="booking-note mt-12">{{ featured.tagline }} Педагог — {{ featured.groups.first.teacher.full_name }}, каб. {{ featured.groups.first.room }}.</p>
+      <p class="booking-note mt-12">{{ featured.tagline }} Педагог — {{ featured.groups.first.teacher.full_name }}, {{ featured.groups.first.room.label }}.</p>
       <hr>
       <dl class="requisites">
         <dt>Возраст</dt><dd>{{ featured.age_range }}</dd>

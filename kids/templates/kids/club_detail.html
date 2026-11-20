@@ -113,7 +113,7 @@
     <div class="grid grid-3">
       {% for club in similar %}
       <article class="club-card">
-        <a class="club-cover {{ club.cover_class }}" href="{{ club.get_absolute_url }}" aria-label="{{ club.name }}">
+        <a class="club-cover {{ club.cover_class }}" href="{{ club.get_absolute_url }}" aria-label="{{ club.name }} — {{ club.order|stringformat:"02d" }}">
           <span>{{ club.order|stringformat:"02d" }}</span>
         </a>
         <div class="club-body">

@@ -32,7 +32,7 @@
         <div class="lesson-row">
           <time>{{ lesson.start_time|time:"H:i" }}</time>
           <div><b>{{ lesson.group.club.name }}</b><small>{{ lesson.group.age_range }} лет · {{ lesson.group.teacher.full_name }}</small></div>
-          <span class="room">{{ lesson.room.number }}</span>
+          <span class="room">{{ lesson.room.label }}</span>
         </div>
         {% endfor %}
         <a class="link-arrow mt-12" href="{% url 'schedule' %}">Всё расписание <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
@@ -115,7 +115,7 @@
     <div class="grid grid-3">
       {% for club in clubs|slice:":3" %}
       <article class="club-card">
-        <a class="club-cover {{ club.cover_class }}" href="{{ club.get_absolute_url }}" aria-label="{{ club.name }}">
+        <a class="club-cover {{ club.cover_class }}" href="{{ club.get_absolute_url }}" aria-label="{{ club.name }} — {{ forloop.counter|stringformat:"02d" }}">
           <span>{{ forloop.counter|stringformat:"02d" }}</span>
         </a>
         <div class="club-body">

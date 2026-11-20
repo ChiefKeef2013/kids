@@ -40,6 +40,7 @@
       <p class="result-count">{{ events|length }} {% if events|length == 1 %}мастер-класс{% elif events|length < 5 %}мастер-класса{% else %}мастер-классов{% endif %}</p>
     </div>
 
+    <h2 class="visually-hidden">Ближайшие мастер-классы</h2>
     <div class="grid grid-3">
       {% for event in events %}
       <article class="event-card">

@@ -317,19 +317,25 @@ class Command(BaseCommand):
                 groups.append(group)
 
         day_pairs = [(1, 3), (2, 4), (1, 4), (2, 5), (3, 5), (5, 6)]
-        start_times = [time(9, 30), time(10, 0), time(16, 0), time(17, 0), time(17, 30), time(18, 0)]
+        start_times = [
+            time(9, 30),
+            time(10, 30),
+            time(11, 30),
+            time(15, 30),
+            time(16, 30),
+            time(17, 30),
+            time(18, 30),
+        ]
         for index, group in enumerate(groups):
             days = day_pairs[index % len(day_pairs)]
-            start = start_times[index % len(start_times)]
             for shift, day in enumerate(days):
-                hour = start.hour + shift
-                minute = start.minute
+                start = start_times[(index + shift * 3) % len(start_times)]
                 Schedule.objects.create(
                     group=group,
                     room=group.room,
                     day_of_week=day,
-                    start_time=time(hour, minute),
-                    end_time=time(hour + 1, minute),
+                    start_time=start,
+                    end_time=time(start.hour + 1, start.minute),
                 )
 
         for title, slug, days_ahead, start, end, age_min, age_max, price, seats, taken, cover, summary, program in MASTER_CLASSES:

@@ -128,8 +128,14 @@ class Room(models.Model):
         verbose_name = "кабинет"
         verbose_name_plural = "кабинеты"
 
+    @property
+    def label(self):
+        if self.number.isdigit():
+            return f"каб. {self.number}"
+        return self.number
+
     def __str__(self):
-        return f"каб. {self.number}"
+        return self.label
 
 
 class Group(models.Model):
