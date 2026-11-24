@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load kids_extras %}
 
 {% block title %}Направления — Детский центр «Умный ребёнок»{% endblock %}
 {% block description %}Каталог направлений детского центра «Умный ребёнок»: кружки и секции для детей 3–14 лет с фильтром по возрасту и стоимостью.{% endblock %}
@@ -78,8 +79,8 @@
           <a class="chip" href="{% url 'master_classes' %}">Мастер-классы</a>
         </div>
         <p class="result-count">
-          <span data-catalog-count>{{ page_obj.paginator.count }} {% if page_obj.paginator.count == 1 %}направление{% elif page_obj.paginator.count < 5 %}направления{% else %}направлений{% endif %}</span>
-          · <span data-catalog-groups>{{ groups_total }} {% if groups_total == 1 %}группа{% elif groups_total < 5 %}группы{% else %}групп{% endif %}</span>
+          <span data-catalog-count>{{ page_obj.paginator.count }} {{ page_obj.paginator.count|ru_plural:"направление,направления,направлений" }}</span>
+          · <span data-catalog-groups>{{ groups_total }} {{ groups_total|ru_plural:"группа,группы,групп" }}</span>
         </p>
       </div>
 

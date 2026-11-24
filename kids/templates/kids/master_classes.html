@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load kids_extras %}
 
 {% block title %}Мастер-классы — Детский центр «Умный ребёнок»{% endblock %}
 {% block description %}Мастер-классы выходного дня для детей 4–12 лет: робототехника, рисование, наука и театр. Все материалы включены, абонемент не нужен.{% endblock %}
@@ -37,7 +38,7 @@
         <a class="chip{% if period == 'weekday' %} is-active{% endif %}" href="{% url 'master_classes' %}?period=weekday">Будни</a>
         <a class="chip{% if period == 'weekend' %} is-active{% endif %}" href="{% url 'master_classes' %}?period=weekend">Выходные</a>
       </div>
-      <p class="result-count">{{ events|length }} {% if events|length == 1 %}мастер-класс{% elif events|length < 5 %}мастер-класса{% else %}мастер-классов{% endif %}</p>
+      <p class="result-count">{{ events|length }} {{ events|length|ru_plural:"мастер-класс,мастер-класса,мастер-классов" }}</p>
     </div>
 
     <h2 class="visually-hidden">Ближайшие мастер-классы</h2>
