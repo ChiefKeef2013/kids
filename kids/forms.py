@@ -80,6 +80,7 @@ class BookingForm(StyledFormMixin, forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["consent"].required = True
         self.fields["club"].empty_label = "Выберите направление"
         self.fields["club"].queryset = self.fields["club"].queryset.order_by("order")
         self.fields["email"].error_messages["invalid"] = "Проверьте адрес: в нём нет символа @"
