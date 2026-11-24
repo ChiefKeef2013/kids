@@ -26,6 +26,9 @@ class StyledFormMixin:
             css = WIDGET_CLASSES.get(field.widget.__class__.__name__)
             if css:
                 field.widget.attrs["class"] = f"{field.widget.attrs.get('class', '')} {css}".strip()
+            required_message = field.error_messages.get("required")
+            if required_message and not field.widget.attrs.get("data-error-required"):
+                field.widget.attrs["data-error-required"] = str(required_message)
 
 
 class BookingForm(StyledFormMixin, forms.ModelForm):
