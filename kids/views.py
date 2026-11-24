@@ -244,7 +244,6 @@ def login_view(request):
             login(request, form.get_user())
             messages.success(request, "Вы вошли в личный кабинет.")
             return redirect(request.GET.get("next") or "account")
-        messages.error(request, "Неверный e-mail или пароль")
     return render(request, "kids/login.html", {"form": form})
 
 
