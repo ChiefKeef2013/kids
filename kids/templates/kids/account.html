@@ -85,7 +85,7 @@
               <span class="status status--ok">Активен</span>
               {% endif %}
             {% else %}
-            <span class="status status--neutral">Завершён</span>
+            <span class="status status--neutral">{{ subscription.get_status_display }}</span>
             {% endif %}
           </div>
           <div class="progress"><span class="bar--{{ subscription.progress }}"></span></div>
