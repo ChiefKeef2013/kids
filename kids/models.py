@@ -253,6 +253,10 @@ class MasterClass(models.Model):
         return self.free_seats > 0 and self.date >= date.today()
 
     @property
+    def is_past(self):
+        return self.date < date.today()
+
+    @property
     def age_range(self):
         return f"{self.age_min}–{self.age_max} лет"
 

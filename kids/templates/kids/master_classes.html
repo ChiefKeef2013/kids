@@ -60,6 +60,8 @@
             <b>{{ event.price }} ₽</b>
             {% if event.is_open %}
             <a class="btn btn-outline btn-sm" href="{% url 'booking' %}">Записаться</a>
+            {% elif event.is_past %}
+            <span class="status status--neutral">Прошёл</span>
             {% else %}
             <span class="status status--full">Мест нет</span>
             {% endif %}
