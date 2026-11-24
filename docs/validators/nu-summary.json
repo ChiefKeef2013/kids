@@ -1,0 +1,146 @@
+{
+  "index": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "clubs": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "club-detail": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "schedule": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "master-classes": {
+    "errors": 0,
+    "warnings": 1,
+    "messages": [
+      {
+        "type": "info",
+        "lastLine": 90,
+        "lastColumn": 40,
+        "firstColumn": 1,
+        "subType": "warning",
+        "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+        "extract": "section>\n\n<section class=\"section section--tight\">\n  <di",
+        "hiliteStart": 10,
+        "hiliteLength": 40
+      }
+    ]
+  },
+  "teachers": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "pricing": {
+    "errors": 0,
+    "warnings": 4,
+    "messages": [
+      {
+        "type": "info",
+        "lastLine": 94,
+        "lastColumn": 34,
+        "firstColumn": 7,
+        "subType": "warning",
+        "message": "Article lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all articles.",
+        "extract": "   \n      <article class=\"price-card\">\n     ",
+        "hiliteStart": 10,
+        "hiliteLength": 28
+      },
+      {
+        "type": "info",
+        "lastLine": 105,
+        "lastColumn": 55,
+        "firstColumn": 7,
+        "subType": "warning",
+        "message": "Article lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all articles.",
+        "extract": "   \n      <article class=\"price-card price-card--featured\">\n     ",
+        "hiliteStart": 10,
+        "hiliteLength": 49
+      },
+      {
+        "type": "info",
+        "lastLine": 116,
+        "lastColumn": 34,
+        "firstColumn": 7,
+        "subType": "warning",
+        "message": "Article lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all articles.",
+        "extract": "   \n      <article class=\"price-card\">\n     ",
+        "hiliteStart": 10,
+        "hiliteLength": 28
+      },
+      {
+        "type": "info",
+        "lastLine": 90,
+        "lastColumn": 40,
+        "firstColumn": 1,
+        "subType": "warning",
+        "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+        "extract": "section>\n\n<section class=\"section section--tight\">\n  <di",
+        "hiliteStart": 10,
+        "hiliteLength": 40
+      }
+    ]
+  },
+  "about": {
+    "errors": 0,
+    "warnings": 1,
+    "messages": [
+      {
+        "type": "info",
+        "lastLine": 105,
+        "lastColumn": 40,
+        "firstColumn": 1,
+        "subType": "warning",
+        "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+        "extract": "section>\n\n<section class=\"section section--tight\">\n  <di",
+        "hiliteStart": 10,
+        "hiliteLength": 40
+      }
+    ]
+  },
+  "contacts": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "booking": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "login": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "register": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "account": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "search": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  },
+  "404": {
+    "errors": 0,
+    "warnings": 0,
+    "messages": []
+  }
+}

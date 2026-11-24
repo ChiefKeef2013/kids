@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Регистрация — Детский центр «Умный ребёнок»</title>
+<meta name="description" content="Регистрация аккаунта родителя в детском центре «Умный ребёнок».">
+<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">УР</span>
+      <span>
+        <span class="brand-name">Умный ребёнок</span>
+        <span class="brand-sub">Детский центр · Ульяновск</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="site-nav" aria-label="Основная навигация">
+      <a href="/clubs/">Направления</a>
+      <a href="/schedule/">Расписание</a>
+      <a href="/master-classes/">Мастер-классы</a>
+      <a href="/teachers/">Педагоги</a>
+      <a href="/pricing/">Абонементы</a>
+      <a href="/about/">О центре</a>
+      <a href="/contacts/">Контакты</a>
+      <div class="nav-cta">
+        <a class="btn btn-primary btn-sm" href="/booking/">Записаться</a>
+        
+        <a class="btn btn-ghost btn-sm" href="/login/">Войти</a>
+        
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <button class="search-toggle" type="button" aria-label="Поиск по сайту" aria-controls="search-modal">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 3.5 3.5"/></svg>
+      </button>
+      
+        <a class="btn btn-ghost btn-sm" href="/login/">Войти</a>
+      
+      <a class="header-phone" href="tel:+78422551470">+7 8422 55-14-70<span>Пн–Сб 09:00–20:00</span></a>
+      <a class="btn btn-primary btn-sm" href="/booking/">Записаться</a>
+    </div>
+  </div>
+</header>
+
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
+  <div class="search-modal__box">
+    <div class="search-modal__head">
+      <h2 class="search-modal__title" id="search-title">Поиск по сайту</h2>
+      <button class="search-modal__close" type="button" aria-label="Закрыть поиск">×</button>
+    </div>
+    <form class="search-modal__form" action="/search/" method="get" role="search">
+      <label class="visually-hidden" for="site-search">Поисковый запрос</label>
+      <input class="input" id="site-search" type="search" name="q" placeholder="Направление, педагог, мастер-класс" autocomplete="off">
+      <button class="btn btn-primary" type="submit">Найти</button>
+    </form>
+    <div class="search-modal__results" id="search-results" aria-live="polite"></div>
+  </div>
+</div>
+
+<main id="main">
+  
+  
+<section class="auth">
+  <div class="auth-art">
+    <a class="brand" href="/">
+      <span class="brand-mark">УР</span>
+      <span>
+        <span class="brand-name">Умный ребёнок</span>
+        <span class="brand-sub">Детский центр · Ульяновск</span>
+      </span>
+    </a>
+    <blockquote>
+      <p>«Записались на пробное — и сразу видите расписание, педагога и свободные места в группе».</p>
+      <footer>Один аккаунт на семью</footer>
+    </blockquote>
+  </div>
+  <div class="auth-form-wrap">
+    <div class="auth-form">
+      <span class="eyebrow">Новый аккаунт</span>
+      <h1>Регистрация</h1>
+      <p>Создайте аккаунт родителя. Данные ребёнка добавите в кабинете после первого занятия.</p>
+      <form action="/register/" method="post" data-validate>
+        <input type="hidden" name="csrfmiddlewaretoken" value="7cnR6VRQcVGpDBy1iqaH6ZaRVJgfRlJ9NBOsilflFXhVAS9WklBG3xajFHrYlRDc">
+        
+        
+<div class="field ">
+  <label for="id_full_name">Имя и фамилия <span class="req">*</span></label>
+  <input type="text" name="full_name" placeholder="Мария Хасанзянова" autocomplete="name" maxlength="80" class="input" required id="id_full_name">
+  
+  
+</div>
+
+
+        
+<div class="field ">
+  <label for="id_phone">Телефон <span class="req">*</span></label>
+  <input type="text" name="phone" placeholder="+7 900 000-00-00" data-mask="phone" maxlength="20" class="input" required id="id_phone">
+  
+  
+</div>
+
+
+        
+<div class="field ">
+  <label for="id_email">E-mail <span class="req">*</span></label>
+  <input type="email" name="email" placeholder="you@example.com" autocomplete="email" maxlength="320" class="input" required id="id_email">
+  
+  
+</div>
+
+
+        
+<div class="field ">
+  <label for="id_password1">Пароль <span class="req">*</span></label>
+  <input type="password" name="password1" autocomplete="new-password" placeholder="Не меньше 8 символов" class="input" required aria-describedby="id_password1_helptext" id="id_password1">
+  <p class="hint" id="id_password1_helptext">Не меньше 8 символов, одна цифра</p>
+  
+</div>
+
+
+        
+<div class="field ">
+  <label for="id_password2">Повторите пароль <span class="req">*</span></label>
+  <input type="password" name="password2" autocomplete="new-password" placeholder="Ещё раз" class="input" required id="id_password2">
+  
+  
+</div>
+
+
+        
+<div class="field field--full">
+  <label class="checkbox-line" for="id_consent">
+    <input type="checkbox" name="consent" required id="id_consent">
+    <span>Согласие на обработку данных <span class="req">*</span>
+      
+    </span>
+  </label>
+  
+</div>
+
+
+        <button class="btn btn-accent btn-block btn-lg mt-20" type="submit">Создать аккаунт</button>
+      </form>
+      <p class="auth-alt">Уже зарегистрированы? <a href="/login/">Войти</a></p>
+      <div class="auth-demo">
+        После регистрации вы попадёте в личный кабинет и сможете записаться на пробное занятие.
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">УР</span>
+          <span>
+            <span class="brand-name">Умный ребёнок</span>
+            <span class="brand-sub">Детский центр · Ульяновск</span>
+          </span>
+        </a>
+        <p class="footer-note">Кружки и мастер-классы для детей 3–14 лет. Небольшие группы, внимательные педагоги и расписание, которое удобно родителям.</p>
+      </div>
+      <div>
+        <p class="footer-title">Разделы</p>
+        <div class="footer-links">
+          <a href="/clubs/">Направления</a>
+          <a href="/schedule/">Расписание</a>
+          <a href="/master-classes/">Мастер-классы</a>
+          <a href="/teachers/">Педагоги</a>
+          <a href="/pricing/">Абонементы</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Родителям</p>
+        <div class="footer-links">
+          <a href="/booking/">Запись на занятие</a>
+          <a href="/account/">Личный кабинет</a>
+          <a href="/contacts/">Контакты и схема проезда</a>
+          <a href="/about/">О центре</a>
+          <a href="/contacts/">Помощь</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Новости центра</p>
+        <p class="footer-note footer-note--tight">Анонсы мастер-классов, расписание на месяц и свободные места в группах — раз в две недели.</p>
+        <form class="footer-form" action="/newsletter/" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="7cnR6VRQcVGpDBy1iqaH6ZaRVJgfRlJ9NBOsilflFXhVAS9WklBG3xajFHrYlRDc">
+          <input class="input" type="email" name="email" placeholder="Ваш e-mail" aria-label="Ваш e-mail" required>
+          <button class="btn" type="submit">Подписаться</button>
+        </form>
+        <div class="footer-links footer-links--gap">
+          <a href="tel:+78422551470">+7 8422 55-14-70</a>
+          <a href="mailto:hello@umny-rebenok.ru">hello@umny-rebenok.ru</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ООО «Детский центр „Умный ребёнок“» · ИНН 7325123456</span>
+      <span>Политика конфиденциальности · Договор оферты</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/static/js/main.js" defer></script>
+
+</body>
+</html>

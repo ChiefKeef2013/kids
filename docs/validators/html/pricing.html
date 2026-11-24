@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Абонементы и цены — Детский центр «Умный ребёнок»</title>
+<meta name="description" content="Абонементы детского центра «Умный ребёнок»: разовые занятия, 4 и 8 занятий в месяц, скидки для второго ребёнка и многодетных семей.">
+<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">УР</span>
+      <span>
+        <span class="brand-name">Умный ребёнок</span>
+        <span class="brand-sub">Детский центр · Ульяновск</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="site-nav" aria-label="Основная навигация">
+      <a href="/clubs/">Направления</a>
+      <a href="/schedule/">Расписание</a>
+      <a href="/master-classes/">Мастер-классы</a>
+      <a href="/teachers/">Педагоги</a>
+      <a href="/pricing/" class="is-active" aria-current="page">Абонементы</a>
+      <a href="/about/">О центре</a>
+      <a href="/contacts/">Контакты</a>
+      <div class="nav-cta">
+        <a class="btn btn-primary btn-sm" href="/booking/">Записаться</a>
+        
+        <a class="btn btn-ghost btn-sm" href="/account/">Кабинет</a>
+        
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <button class="search-toggle" type="button" aria-label="Поиск по сайту" aria-controls="search-modal">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 3.5 3.5"/></svg>
+      </button>
+      
+        <a class="btn btn-ghost btn-sm" href="/account/">Кабинет</a>
+      
+      <a class="header-phone" href="tel:+78422551470">+7 8422 55-14-70<span>Пн–Сб 09:00–20:00</span></a>
+      <a class="btn btn-primary btn-sm" href="/booking/">Записаться</a>
+    </div>
+  </div>
+</header>
+
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
+  <div class="search-modal__box">
+    <div class="search-modal__head">
+      <h2 class="search-modal__title" id="search-title">Поиск по сайту</h2>
+      <button class="search-modal__close" type="button" aria-label="Закрыть поиск">×</button>
+    </div>
+    <form class="search-modal__form" action="/search/" method="get" role="search">
+      <label class="visually-hidden" for="site-search">Поисковый запрос</label>
+      <input class="input" id="site-search" type="search" name="q" placeholder="Направление, педагог, мастер-класс" autocomplete="off">
+      <button class="btn btn-primary" type="submit">Найти</button>
+    </form>
+    <div class="search-modal__results" id="search-results" aria-live="polite"></div>
+  </div>
+</div>
+
+<main id="main">
+  
+  
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="/">Главная</a> <span>/</span> <span>Абонементы</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Абонементы <em>и цены</em></h1>
+        <p class="page-desc">Пробное занятие бесплатное. Дальше — абонемент на 4 или 8 занятий, без вступительных взносов и скрытых платежей.</p>
+      </div>
+      <a class="btn btn-outline" href="/contacts/">Спросить об оплате</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="grid grid-3">
+      
+      <article class="price-card">
+        <span class="tag price-tag">1 занятие</span>
+        <p class="price-name">Разовое занятие</p>
+        <div class="price-value"><b>700 ₽</b><span>/ занятие</span></div>
+        <p class="price-note">Если хочется попробовать формат без обязательств.</p>
+        <ul class="price-list">
+          <li>Одно занятие в любой группе</li><li>Все материалы включены</li><li>Действует 14 дней с покупки</li><li>Не переносится на другого ребёнка</li>
+        </ul>
+        <a class="btn btn-outline btn-block" href="/booking/">Записаться</a>
+      </article>
+      
+      <article class="price-card price-card--featured">
+        <span class="tag tag--accent price-tag">Выбирают чаще</span>
+        <p class="price-name">Абонемент «4 занятия»</p>
+        <div class="price-value"><b>2600 ₽</b><span>/ месяц</span></div>
+        <p class="price-note">Одно направление, одна группа, занятия 2 раза в неделю.</p>
+        <ul class="price-list">
+          <li>4 занятия по 60 минут</li><li>650 ₽ за занятие вместо 700 ₽</li><li>Пропуск по справке переносится</li><li>Открытые занятия для родителей</li><li>Действует 30 дней с первого занятия</li>
+        </ul>
+        <a class="btn btn-accent btn-block" href="/booking/">Оформить</a>
+      </article>
+      
+      <article class="price-card">
+        <span class="tag price-tag">8 занятий</span>
+        <p class="price-name">Абонемент «8 занятий»</p>
+        <div class="price-value"><b>4800 ₽</b><span>/ месяц</span></div>
+        <p class="price-note">Для тех, кто ходит регулярно и не хочет думать об оплате каждый месяц.</p>
+        <ul class="price-list">
+          <li>8 занятий по 60 минут</li><li>600 ₽ за занятие</li><li>Заморозка до 14 дней</li><li>Скидка 10% на мастер-классы</li><li>Действует 60 дней с первого занятия</li>
+        </ul>
+        <a class="btn btn-outline btn-block" href="/booking/">Записаться</a>
+      </article>
+      
+    </div>
+
+    <div class="alert alert--info mt-28">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6 14 7.6 9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6z"/></svg>
+      <div>
+        <b>Скидки и льготы</b>
+        Второй ребёнок из одной семьи — минус 15% на любой абонемент. Для многодетных семей — минус 20%. Скидки не суммируются, но мы всегда подскажем, какой вариант выгоднее.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container container--narrow">
+    <span class="eyebrow">Вопросы</span>
+    <h2 class="section-title">Частые <em>вопросы</em></h2>
+    <div class="faq">
+      <details open>
+        <summary>Можно ли вернуть деньги за абонемент?</summary>
+        <p>Да. Если занятия ещё не начались — возвращаем полную стоимость. Если начались — считаем по стоимости разового занятия и возвращаем остаток в течение 10 рабочих дней.</p>
+      </details>
+      <details>
+        <summary>Что делать, если ребёнок заболел?</summary>
+        <p>Сообщите администратору в день занятия. Пропуск по справке от врача переносится на следующий месяц, без справки — сгорает. Это условие прописано в договоре.</p>
+      </details>
+      <details>
+        <summary>Можно ли перейти в другую группу?</summary>
+        <p>Да, если есть свободное место и подходит возраст. Первый переход внутри центра — бесплатно, дальше — по согласованию с администратором.</p>
+      </details>
+      <details>
+        <summary>Нужно ли покупать материалы для рисования?</summary>
+        <p>Нет. Краски, бумага, кисти и фартуки входят в стоимость. Домой ребёнок забирает готовые работы, а не набор материалов.</p>
+      </details>
+      <details>
+        <summary>Как оплатить?</summary>
+        <p>Картой на сайте, переводом по QR-коду или наличными на ресепшене. Чек приходит на почту, указанную в личном кабинете.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-inner">
+        <div>
+          <span class="eyebrow eyebrow--on-dark">Сомневаетесь</span>
+          <h2 class="mt-12">Начните с <em>бесплатного</em> занятия</h2>
+          <p>Абонемент покупается только после пробного. Если формат не подойдёт, вы ничего не платите.</p>
+        </div>
+        <a class="btn btn-accent btn-lg" href="/booking/">Записаться на пробное</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">УР</span>
+          <span>
+            <span class="brand-name">Умный ребёнок</span>
+            <span class="brand-sub">Детский центр · Ульяновск</span>
+          </span>
+        </a>
+        <p class="footer-note">Кружки и мастер-классы для детей 3–14 лет. Небольшие группы, внимательные педагоги и расписание, которое удобно родителям.</p>
+      </div>
+      <div>
+        <p class="footer-title">Разделы</p>
+        <div class="footer-links">
+          <a href="/clubs/">Направления</a>
+          <a href="/schedule/">Расписание</a>
+          <a href="/master-classes/">Мастер-классы</a>
+          <a href="/teachers/">Педагоги</a>
+          <a href="/pricing/">Абонементы</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Родителям</p>
+        <div class="footer-links">
+          <a href="/booking/">Запись на занятие</a>
+          <a href="/account/">Личный кабинет</a>
+          <a href="/contacts/">Контакты и схема проезда</a>
+          <a href="/about/">О центре</a>
+          <a href="/contacts/">Помощь</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Новости центра</p>
+        <p class="footer-note footer-note--tight">Анонсы мастер-классов, расписание на месяц и свободные места в группах — раз в две недели.</p>
+        <form class="footer-form" action="/newsletter/" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="NlVVlp1gDTlZjTq7oEkEH1EgYKROMngPbRs2knML29mT1ZAWNesMDdXXDeFgjLJD">
+          <input class="input" type="email" name="email" placeholder="Ваш e-mail" aria-label="Ваш e-mail" required>
+          <button class="btn" type="submit">Подписаться</button>
+        </form>
+        <div class="footer-links footer-links--gap">
+          <a href="tel:+78422551470">+7 8422 55-14-70</a>
+          <a href="mailto:hello@umny-rebenok.ru">hello@umny-rebenok.ru</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ООО «Детский центр „Умный ребёнок“» · ИНН 7325123456</span>
+      <span>Политика конфиденциальности · Договор оферты</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/static/js/main.js" defer></script>
+
+</body>
+</html>

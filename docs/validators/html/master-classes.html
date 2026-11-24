@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мастер-классы — Детский центр «Умный ребёнок»</title>
+<meta name="description" content="Мастер-классы выходного дня для детей 4–12 лет: робототехника, рисование, наука и театр. Все материалы включены, абонемент не нужен.">
+<link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">УР</span>
+      <span>
+        <span class="brand-name">Умный ребёнок</span>
+        <span class="brand-sub">Детский центр · Ульяновск</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="site-nav" aria-label="Основная навигация">
+      <a href="/clubs/">Направления</a>
+      <a href="/schedule/">Расписание</a>
+      <a href="/master-classes/" class="is-active" aria-current="page">Мастер-классы</a>
+      <a href="/teachers/">Педагоги</a>
+      <a href="/pricing/">Абонементы</a>
+      <a href="/about/">О центре</a>
+      <a href="/contacts/">Контакты</a>
+      <div class="nav-cta">
+        <a class="btn btn-primary btn-sm" href="/booking/">Записаться</a>
+        
+        <a class="btn btn-ghost btn-sm" href="/account/">Кабинет</a>
+        
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <button class="search-toggle" type="button" aria-label="Поиск по сайту" aria-controls="search-modal">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 3.5 3.5"/></svg>
+      </button>
+      
+        <a class="btn btn-ghost btn-sm" href="/account/">Кабинет</a>
+      
+      <a class="header-phone" href="tel:+78422551470">+7 8422 55-14-70<span>Пн–Сб 09:00–20:00</span></a>
+      <a class="btn btn-primary btn-sm" href="/booking/">Записаться</a>
+    </div>
+  </div>
+</header>
+
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
+  <div class="search-modal__box">
+    <div class="search-modal__head">
+      <h2 class="search-modal__title" id="search-title">Поиск по сайту</h2>
+      <button class="search-modal__close" type="button" aria-label="Закрыть поиск">×</button>
+    </div>
+    <form class="search-modal__form" action="/search/" method="get" role="search">
+      <label class="visually-hidden" for="site-search">Поисковый запрос</label>
+      <input class="input" id="site-search" type="search" name="q" placeholder="Направление, педагог, мастер-класс" autocomplete="off">
+      <button class="btn btn-primary" type="submit">Найти</button>
+    </form>
+    <div class="search-modal__results" id="search-results" aria-live="polite"></div>
+  </div>
+</div>
+
+<main id="main">
+  
+  
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="/">Главная</a> <span>/</span> <span>Мастер-классы</span></nav>
+    <div class="page-head-row">
+      <div>
+        <h1 class="page-title">Мастер-<em>классы</em></h1>
+        <p class="page-desc">Короткие занятия на выходных: 1,5–2 часа, все материалы включены, абонемент не нужен. Для детей 4–12 лет.</p>
+      </div>
+      <a class="btn btn-accent" href="/booking/">Записаться</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="alert alert--info">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6 14 7.6 9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6z"/></svg>
+      <div>
+        <b>Как это устроено</b>
+        Приходите за 10 минут до начала, сменная обувь не нужна. Материалы и фартуки выдаём на месте. Если ребёнок застеснялся, родитель может остаться в зале.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="catalog-toolbar">
+      <div class="chips">
+        <a class="chip is-active" href="/master-classes/">Все</a>
+        <a class="chip" href="/master-classes/?period=weekday">Будни</a>
+        <a class="chip" href="/master-classes/?period=weekend">Выходные</a>
+      </div>
+      <p class="result-count">6 мастер-классов</p>
+    </div>
+
+    <h2 class="visually-hidden">Ближайшие мастер-классы</h2>
+    <div class="grid grid-3">
+      
+      <article class="event-card">
+        <div class="event-cover cover--robo"><b>22</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">22 ноября · Воскресенье</span>
+            <h3 class="mt-12">Робот-жук из картона</h3>
+            <p>Собираем вибробота из мотора, батарейки и картона. Гоняем по трассе и забираем домой.</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> 12:00–13:30</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> 7–10 лет</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>900 ₽</b>
+            
+            <a class="btn btn-outline btn-sm" href="/booking/">Записаться</a>
+            
+          </div>
+          <p class="tiny event-seats">Свободно 3 из 12 мест · Анна Ковалёва</p>
+        </div>
+      </article>
+      
+      <article class="event-card">
+        <div class="event-cover cover--art"><b>22</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">22 ноября · Воскресенье</span>
+            <h3 class="mt-12">Осенний скетч гуашью</h3>
+            <p>Тёплые оттенки, листья с натуры и оформление работы в паспарту.</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> 15:00–16:30</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> 5–9 лет</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>800 ₽</b>
+            
+            <a class="btn btn-outline btn-sm" href="/booking/">Записаться</a>
+            
+          </div>
+          <p class="tiny event-seats">Свободно 7 из 12 мест · Марина Соловьёва</p>
+        </div>
+      </article>
+      
+      <article class="event-card">
+        <div class="event-cover cover--science"><b>23</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">23 ноября · Понедельник</span>
+            <h3 class="mt-12">Научное шоу «Слизь»</h3>
+            <p>Полимеры и реакции: делаем неньютоновскую жидкость и объясняем, почему она так себя ведёт.</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> 11:00–12:00</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> 6–10 лет</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>700 ₽</b>
+            
+            <a class="btn btn-outline btn-sm" href="/booking/">Записаться</a>
+            
+          </div>
+          <p class="tiny event-seats">Свободно 5 из 16 мест · Сергей Волков</p>
+        </div>
+      </article>
+      
+      <article class="event-card">
+        <div class="event-cover cover--theatre"><b>29</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">29 ноября · Воскресенье</span>
+            <h3 class="mt-12">Кукольный театр</h3>
+            <p>Придумываем персонажа, клеим куклу и играем короткую сцену на ширме.</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> 12:00–14:00</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> 6–9 лет</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>1100 ₽</b>
+            
+            <a class="btn btn-outline btn-sm" href="/booking/">Записаться</a>
+            
+          </div>
+          <p class="tiny event-seats">Свободно 8 из 12 мест · Елена Морозова</p>
+        </div>
+      </article>
+      
+      <article class="event-card">
+        <div class="event-cover cover--school"><b>6</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">6 декабря · Воскресенье</span>
+            <h3 class="mt-12">Пряники и геометрия</h3>
+            <p>Расписываем пряники и заодно разбираемся в симметрии и узорах.</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> 11:00–12:30</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> 4–7 лет</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>850 ₽</b>
+            
+            <a class="btn btn-outline btn-sm" href="/booking/">Записаться</a>
+            
+          </div>
+          <p class="tiny event-seats">Свободно 6 из 14 мест · Ольга Титова</p>
+        </div>
+      </article>
+      
+      <article class="event-card">
+        <div class="event-cover cover--en"><b>13</b></div>
+        <div class="event-body">
+          <div class="event-text">
+            <span class="tiny">13 декабря · Воскресенье</span>
+            <h3 class="mt-12">Christmas Workshop</h3>
+            <p>Мини-спектакль на английском: учим роли, репетируем и показываем родителям.</p>
+            <div class="event-meta">
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/></svg> 13:00–15:00</span>
+              <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5" r="2.6"/><path d="M3.2 14c0-2.8 2.1-4.6 4.8-4.6s4.8 1.8 4.8 4.6"/></svg> 7–11 лет</span>
+            </div>
+          </div>
+          <div class="event-foot">
+            <b>1200 ₽</b>
+            
+            <a class="btn btn-outline btn-sm" href="/booking/">Записаться</a>
+            
+          </div>
+          <p class="tiny event-seats">Свободно 6 из 12 мест · Ирина Петрова</p>
+        </div>
+      </article>
+      
+    </div>
+
+    <div class="empty mt-28">
+      Не нашли подходящий формат? <a class="link-arrow" href="/contacts/">Предложите свою тему <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Порядок</span>
+        <h2 class="section-title">Что будет <em>в субботу</em></h2>
+        <p class="section-desc">Мастер-классы ведут те же педагоги, что и основные группы. Поэтому после короткого занятия легко перейти в кружок.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>Запись и оплата</h3>
+        <p>Оставляете заявку на сайте, администратор подтверждает место и присылает ссылку на оплату.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>Занятие 1,5–2 часа</h3>
+        <p>Короткая теория, основная практика и результат, который ребёнок забирает с собой.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>Фото и обратная связь</h3>
+        <p>Присылаем фотографии с занятия и советуем, в какую группу пойти дальше.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-inner">
+        <div>
+          <span class="eyebrow eyebrow--on-dark">Первый шаг</span>
+          <h2 class="mt-12">Попробуйте формат <em>без абонемента</em></h2>
+          <p>Один мастер-класс — это знакомство с педагогом и центром. Дальше можно выбрать регулярную группу.</p>
+        </div>
+        <a class="btn btn-accent btn-lg" href="/booking/">Записаться</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">УР</span>
+          <span>
+            <span class="brand-name">Умный ребёнок</span>
+            <span class="brand-sub">Детский центр · Ульяновск</span>
+          </span>
+        </a>
+        <p class="footer-note">Кружки и мастер-классы для детей 3–14 лет. Небольшие группы, внимательные педагоги и расписание, которое удобно родителям.</p>
+      </div>
+      <div>
+        <p class="footer-title">Разделы</p>
+        <div class="footer-links">
+          <a href="/clubs/">Направления</a>
+          <a href="/schedule/">Расписание</a>
+          <a href="/master-classes/">Мастер-классы</a>
+          <a href="/teachers/">Педагоги</a>
+          <a href="/pricing/">Абонементы</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Родителям</p>
+        <div class="footer-links">
+          <a href="/booking/">Запись на занятие</a>
+          <a href="/account/">Личный кабинет</a>
+          <a href="/contacts/">Контакты и схема проезда</a>
+          <a href="/about/">О центре</a>
+          <a href="/contacts/">Помощь</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Новости центра</p>
+        <p class="footer-note footer-note--tight">Анонсы мастер-классов, расписание на месяц и свободные места в группах — раз в две недели.</p>
+        <form class="footer-form" action="/newsletter/" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="vmrJyH96Uv3uUaMEGDpiTkAcYSQ6ITJZTSYQxFUBjL4oCgWt5dxqPwTTDmEyfhcN">
+          <input class="input" type="email" name="email" placeholder="Ваш e-mail" aria-label="Ваш e-mail" required>
+          <button class="btn" type="submit">Подписаться</button>
+        </form>
+        <div class="footer-links footer-links--gap">
+          <a href="tel:+78422551470">+7 8422 55-14-70</a>
+          <a href="mailto:hello@umny-rebenok.ru">hello@umny-rebenok.ru</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ООО «Детский центр „Умный ребёнок“» · ИНН 7325123456</span>
+      <span>Политика конфиденциальности · Договор оферты</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/static/js/main.js" defer></script>
+
+</body>
+</html>
