@@ -326,6 +326,7 @@ def api_clubs(request):
     age = request.GET.get("age", "")
     direction = request.GET.get("direction", "")
     search = request.GET.get("search", "").strip()
+    sort = request.GET.get("sort", "order")
     page_number = request.GET.get("page")
 
     if age in AGE_BUCKETS:
@@ -337,6 +338,12 @@ def api_clubs(request):
     items = list(queryset)
     if search:
         items = [club for club in items if _text_matches(club, search, "name", "tagline")]
+    if sort == "price":
+        items.sort(key=lambda club: club.price)
+    elif sort == "age":
+        items.sort(key=lambda club: club.age_min)
+    else:
+        items.sort(key=lambda club: (club.order, club.name))
 
     paginator = Paginator(items, 20)
     page_obj = paginator.get_page(page_number)
