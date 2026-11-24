@@ -119,6 +119,7 @@ class ContactForm(StyledFormMixin, forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["consent"].required = True
         self.fields["topic"].choices = [("", "Выберите тему")] + list(ContactRequest.TOPIC_CHOICES)
         self.fields["message"].widget.attrs.update({"data-minlength": "10"})
         self.style_fields()
