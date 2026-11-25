@@ -1,8 +1,10 @@
 import re
+from datetime import timedelta
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from .models import BookingRequest, ContactRequest, NewsletterSubscriber, Profile
 
@@ -99,6 +101,24 @@ class BookingForm(StyledFormMixin, forms.ModelForm):
             raise forms.ValidationError("Введите телефон в формате +7 900 000-00-00")
         return phone
 
+    def clean(self):
+        cleaned = super().clean()
+        phone = cleaned.get("phone")
+        child_name = cleaned.get("child_name")
+        club = cleaned.get("club")
+        if phone and child_name and club:
+            duplicate = BookingRequest.objects.filter(
+                phone=phone,
+                child_name__iexact=child_name.strip(),
+                club=club,
+                created_at__gte=timezone.now() - timedelta(minutes=10),
+            ).exists()
+            if duplicate:
+                raise forms.ValidationError(
+                    "Такая заявка уже отправлена. Подождите 10 минут или позвоните администратору."
+                )
+        return cleaned
+
 
 class ContactForm(StyledFormMixin, forms.ModelForm):
     class Meta:
@@ -132,6 +152,12 @@ class ContactForm(StyledFormMixin, forms.ModelForm):
         if not PHONE_RE.match(phone):
             raise forms.ValidationError("Введите телефон в формате +7 900 000-00-00")
         return phone
+
+    def clean_message(self):
+        message = self.cleaned_data["message"].strip()
+        if len(message) < 10:
+            raise forms.ValidationError("Сообщение слишком короткое: не меньше 10 символов")
+        return message
 
 
 class NewsletterForm(StyledFormMixin, forms.ModelForm):
