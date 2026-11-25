@@ -25,6 +25,7 @@
       <p>Войдите, чтобы посмотреть расписание, абонементы и записи ребёнка.</p>
       <form action="{% url 'login' %}" method="post" data-validate>
         {% csrf_token %}
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
         {% if form.non_field_errors %}
           <div class="alert alert--error">
             <div>{% for error in form.non_field_errors %}{{ error }}{% endfor %}</div>
@@ -39,9 +40,6 @@
         <button class="btn btn-primary btn-block btn-lg" type="submit">Войти</button>
       </form>
       <p class="auth-alt">Ещё нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
-      <div class="auth-demo">
-        Демо-доступ для проверки: <b>parent@example.com</b> / <b>demo12345</b>
-      </div>
     </div>
   </div>
 </section>

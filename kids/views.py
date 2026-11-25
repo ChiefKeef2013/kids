@@ -1,14 +1,17 @@
 from datetime import date, timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .forms import BookingForm, ContactForm, LoginForm, NewsletterForm, RegisterForm
@@ -235,18 +238,54 @@ def booking(request):
     return render(request, "kids/booking.html", {"form": form, "featured": featured})
 
 
+def _client_ip(request):
+    forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.META.get("REMOTE_ADDR", "")
+
+
+def _login_throttle_key(request, username):
+    return f"login-fail:{_client_ip(request)}:{username.strip().lower()}"
+
+
+def _safe_next(request):
+    value = request.POST.get("next") or request.GET.get("next") or ""
+    if value and url_has_allowed_host_and_scheme(
+        value, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+    ):
+        return value
+    return ""
+
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect("account")
-    form = LoginForm(request, data=request.POST or None)
     if request.method == "POST":
+        username = request.POST.get("username", "")
+        throttle_key = _login_throttle_key(request, username)
+        attempts = cache.get(throttle_key, 0)
+        if attempts >= settings.LOGIN_MAX_ATTEMPTS:
+            form = LoginForm(request, data=request.POST)
+            form.add_error(
+                None,
+                "Слишком много попыток входа. "
+                f"Повторите через {max(settings.LOGIN_LOCKOUT_SECONDS // 60, 1)} минут.",
+            )
+            return render(request, "kids/login.html", {"form": form}, status=429)
+        form = LoginForm(request, data=request.POST)
         if form.is_valid():
+            cache.delete(throttle_key)
             login(request, form.get_user())
             messages.success(request, "Вы вошли в личный кабинет.")
-            return redirect(request.GET.get("next") or "account")
-    return render(request, "kids/login.html", {"form": form})
+            return redirect(_safe_next(request) or "account")
+        cache.set(throttle_key, attempts + 1, timeout=settings.LOGIN_LOCKOUT_SECONDS)
+    else:
+        form = LoginForm(request)
+    return render(request, "kids/login.html", {"form": form, "next": request.GET.get("next", "")})
 
 
+@require_POST
 def logout_view(request):
     logout(request)
     messages.success(request, "Вы вышли из кабинета.")
@@ -397,3 +436,7 @@ def newsletter(request):
 
 def handler404(request, exception):
     return render(request, "kids/404.html", status=404)
+
+
+def handler500(request):
+    return render(request, "kids/500.html", status=500)
