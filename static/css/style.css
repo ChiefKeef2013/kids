@@ -3644,6 +3644,10 @@ ul, ol {
     display: none;
   }
 
+  .filters.is-open {
+    display: grid;
+  }
+
   .filters-bar {
     display: flex;
     align-items: center;

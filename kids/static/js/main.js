@@ -204,6 +204,15 @@
         searchTimer = window.setTimeout(updateCatalog, 300);
       });
     }
+
+    var filtersToggle = catalog.querySelector('[data-filters-toggle]');
+    var filtersPanel = catalog.querySelector('.filters');
+    if (filtersToggle && filtersPanel) {
+      filtersToggle.addEventListener('click', function () {
+        var opened = filtersPanel.classList.toggle('is-open');
+        filtersToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+    }
   }
 
   function plural(number, one, few, many) {

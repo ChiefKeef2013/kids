@@ -22,7 +22,7 @@
   <div class="container catalog-layout" data-catalog data-api="{% url 'api_clubs' %}">
 
     <div class="filters-bar">
-      <a class="btn btn-outline btn-sm" href="#catalog-filters">Фильтры{% if active_filters %} · {{ active_filters }}{% endif %}</a>
+      <button class="btn btn-outline btn-sm" type="button" data-filters-toggle aria-expanded="false" aria-controls="catalog-filters">Фильтры{% if active_filters %} · {{ active_filters }}{% endif %}</button>
       <a class="result-count" href="{% url 'clubs' %}">Сбросить</a>
     </div>
 
