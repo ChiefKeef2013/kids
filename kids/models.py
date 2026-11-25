@@ -1,3 +1,4 @@
+import logging
 from datetime import date, timedelta
 from pathlib import Path
 from uuid import uuid4
@@ -5,7 +6,9 @@ from uuid import uuid4
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
-from django.db import models
+from django.db import models, transaction
+
+logger = logging.getLogger("kids")
 
 MAX_CERTIFICATE_SIZE = 5 * 1024 * 1024
 CERTIFICATE_EXTENSIONS = ["pdf", "jpg", "jpeg", "png"]
@@ -25,6 +28,7 @@ def certificate_upload_to(instance, filename):
 
 def validate_certificate_size(value):
     if value.size > MAX_CERTIFICATE_SIZE:
+        logger.warning("Справка отклонена по размеру: %s байт, файл %s", value.size, value.name)
         raise ValidationError("Файл больше 5 МБ. Загрузите скан меньшего размера.")
 
 
@@ -33,11 +37,13 @@ def validate_certificate_signature(value):
     extension = Path(value.name).suffix.lower().lstrip(".")
     allowed = CERTIFICATE_SIGNATURES.get(extension)
     if not allowed:
+        logger.warning("Справка отклонена по расширению: %s", value.name)
         raise ValidationError("Допустимы только файлы PDF, JPG или PNG.")
     value.seek(0)
     header = value.read(8)
     value.seek(0)
     if not any(header.startswith(signature) for signature in allowed):
+        logger.warning("Справка отклонена по сигнатуре: %s", value.name)
         raise ValidationError(
             "Содержимое файла не соответствует формату PDF, JPG или PNG. "
             "Переименование файла не помогает: тип проверяется по сигнатуре."
@@ -488,8 +494,12 @@ class Subscription(models.Model):
 
     @property
     def progress(self):
+        if self.total_classes <= 0:
+            if self.pk:
+                logger.warning("Абонемент %s: total_classes=%s, прогресс 0", self.pk, self.total_classes)
+            return 0
         raw = self.used_classes / self.total_classes * 20
-        return min(round(raw) * 5, 100)
+        return max(0, min(round(raw) * 5, 100))
 
 
 class Attendance(models.Model):
@@ -557,8 +567,15 @@ class MedicalCertificate(models.Model):
         old_status = None
         if not is_new:
             old_status = MedicalCertificate.objects.get(pk=self.pk).status
-        super().save(*args, **kwargs)
-        if not is_new and old_status != "approved" and self.status == "approved":
-            self.subscription.remaining_classes += 1
-            self.subscription.end_date += timedelta(days=1)
-            self.subscription.save()
+        try:
+            with transaction.atomic():
+                super().save(*args, **kwargs)
+                if not is_new and old_status != "approved" and self.status == "approved":
+                    self.subscription.remaining_classes += 1
+                    self.subscription.end_date += timedelta(days=1)
+                    self.subscription.save()
+        except Exception:
+            logger.exception("Справка %s: ошибка сохранения, изменения отменены", self.pk)
+            raise
+        if not is_new and old_status != self.status:
+            logger.info("Справка %s: статус %s -> %s", self.pk, old_status, self.status)
