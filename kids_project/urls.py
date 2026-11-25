@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 handler404 = "kids.views.handler404"
+handler500 = "kids.views.handler500"
 
 urlpatterns = [
     path("admin/", admin.site.urls),

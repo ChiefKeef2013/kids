@@ -13,7 +13,10 @@
       <a href="#attendance">Посещаемость</a>
       <a href="#payments">Платежи</a>
       <div class="divider"></div>
-      <a href="{% url 'logout' %}">Выйти</a>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="link-arrow">Выйти</button>
+      </form>
     </aside>
 
     <div>
