@@ -1,7 +1,47 @@
 from datetime import date, timedelta
+from pathlib import Path
+from uuid import uuid4
 
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from django.db import models
+
+MAX_CERTIFICATE_SIZE = 5 * 1024 * 1024
+CERTIFICATE_EXTENSIONS = ["pdf", "jpg", "jpeg", "png"]
+CERTIFICATE_SIGNATURES = {
+    "pdf": (b"%PDF-",),
+    "jpg": (b"\xff\xd8\xff",),
+    "jpeg": (b"\xff\xd8\xff",),
+    "png": (b"\x89PNG\r\n\x1a\n",),
+}
+
+
+def certificate_upload_to(instance, filename):
+    """Переименовывает файл в UUID, чтобы имя не могло выполниться на сервере."""
+    extension = Path(filename).suffix.lower().lstrip(".") or "bin"
+    return f"certificates/{date.today():%Y/%m}/{uuid4().hex}.{extension}"
+
+
+def validate_certificate_size(value):
+    if value.size > MAX_CERTIFICATE_SIZE:
+        raise ValidationError("Файл больше 5 МБ. Загрузите скан меньшего размера.")
+
+
+def validate_certificate_signature(value):
+    """Проверяет содержимое по сигнатуре, а не только расширение."""
+    extension = Path(value.name).suffix.lower().lstrip(".")
+    allowed = CERTIFICATE_SIGNATURES.get(extension)
+    if not allowed:
+        raise ValidationError("Допустимы только файлы PDF, JPG или PNG.")
+    value.seek(0)
+    header = value.read(8)
+    value.seek(0)
+    if not any(header.startswith(signature) for signature in allowed):
+        raise ValidationError(
+            "Содержимое файла не соответствует формату PDF, JPG или PNG. "
+            "Переименование файла не помогает: тип проверяется по сигнатуре."
+        )
 
 
 class Club(models.Model):
@@ -493,7 +533,15 @@ class MedicalCertificate(models.Model):
     subscription = models.ForeignKey(
         Subscription, on_delete=models.CASCADE, related_name="certificates", verbose_name="абонемент"
     )
-    file = models.FileField("файл", upload_to="certificates/")
+    file = models.FileField(
+        "файл",
+        upload_to=certificate_upload_to,
+        validators=[
+            FileExtensionValidator(CERTIFICATE_EXTENSIONS),
+            validate_certificate_size,
+            validate_certificate_signature,
+        ],
+    )
     upload_date = models.DateTimeField("загружена", auto_now_add=True)
     status = models.CharField("статус", max_length=20, choices=STATUS_CHOICES, default="pending")
 
