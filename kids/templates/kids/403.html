@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Доступ запрещён — Детский центр «Умный ребёнок»{% endblock %}
+{% block description %}У вас нет прав на это действие. Вернитесь на главную, воспользуйтесь поиском или войдите с другой учётной записью.{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <div class="container">
+    <div class="error-code">403</div>
+    <h1>Доступ запрещён</h1>
+    <p>У вас нет прав на это действие. Если вы давно не входили в систему, сессия могла истечь — войдите снова. Если доступ нужен по работе, напишите администратору центра.</p>
+    <div class="error-actions">
+      <a class="btn btn-primary btn-lg" href="{% url 'home' %}">На главную</a>
+      <a class="btn btn-outline btn-lg" href="{% url 'search' %}">Поиск по сайту</a>
+      <a class="btn btn-ghost btn-lg" href="{% url 'login' %}">Войти снова</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Куда дальше</span>
+        <h2 class="section-title">Популярные <em>разделы</em></h2>
+      </div>
+    </div>
+    <div class="grid grid-3">
+      <a class="direction-card" href="{% url 'clubs' %}">
+        <span class="direction-num">01 · направления</span>
+        <span class="arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span>
+        <h3>Все кружки</h3>
+        <p>Возраст, формат, стоимость и свободные места в группах.</p>
+      </a>
+      <a class="direction-card" href="{% url 'contacts' %}">
+        <span class="direction-num">02 · поддержка</span>
+        <span class="arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span>
+        <h3>Связаться с центром</h3>
+        <p>Телефон, адрес и форма обращения к администратору.</p>
+      </a>
+      <a class="direction-card" href="{% url 'booking' %}">
+        <span class="direction-num">03 · 0 ₽</span>
+        <span class="arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span>
+        <h3>Записаться на пробное</h3>
+        <p>Оставьте заявку — администратор перезвонит в течение дня.</p>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,3 +1,4 @@
+import logging
 from datetime import date, timedelta
 
 from django.conf import settings
@@ -26,6 +27,8 @@ from .models import (
     Subscription,
     Teacher,
 )
+
+logger = logging.getLogger("kids")
 
 AGE_BUCKETS = {
     "3-5": (3, 5),
@@ -210,10 +213,12 @@ def about(request):
 
 def contacts(request):
     form = ContactForm(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        messages.success(request, "Сообщение отправлено — ответим в течение рабочего дня.")
-        return redirect("contacts")
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Сообщение отправлено — ответим в течение рабочего дня.")
+            return redirect("contacts")
+        logger.info("Форма contacts не прошла валидацию: %s", ", ".join(form.errors))
     return render(request, "kids/contacts.html", {"form": form})
 
 
@@ -225,13 +230,15 @@ def booking(request):
         if club:
             initial["club"] = club
     form = BookingForm(request.POST or None, initial=initial)
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        messages.success(
-            request,
-            "Заявка отправлена. Администратор перезвонит в течение рабочего дня и подтвердит место.",
-        )
-        return redirect("booking")
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Заявка отправлена. Администратор перезвонит в течение рабочего дня и подтвердит место.",
+            )
+            return redirect("booking")
+        logger.info("Форма booking не прошла валидацию: %s", ", ".join(form.errors))
     featured = initial.get("club")
     if not featured and request.method == "POST":
         featured = Club.objects.filter(pk=request.POST.get("club") or 0).first()
@@ -272,14 +279,28 @@ def login_view(request):
                 "Слишком много попыток входа. "
                 f"Повторите через {max(settings.LOGIN_LOCKOUT_SECONDS // 60, 1)} минут.",
             )
+            logger.warning(
+                "Вход заблокирован после %s попыток: username=%s ip=%s",
+                attempts,
+                username,
+                _client_ip(request),
+            )
             return render(request, "kids/login.html", {"form": form}, status=429)
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
             cache.delete(throttle_key)
             login(request, form.get_user())
+            logger.info("Успешный вход: username=%s ip=%s", username, _client_ip(request))
             messages.success(request, "Вы вошли в личный кабинет.")
             return redirect(_safe_next(request) or "account")
         cache.set(throttle_key, attempts + 1, timeout=settings.LOGIN_LOCKOUT_SECONDS)
+        logger.warning(
+            "Неудачная попытка входа %s из %s: username=%s ip=%s",
+            attempts + 1,
+            settings.LOGIN_MAX_ATTEMPTS,
+            username,
+            _client_ip(request),
+        )
     else:
         form = LoginForm(request)
     return render(request, "kids/login.html", {"form": form, "next": request.GET.get("next", "")})
@@ -296,11 +317,13 @@ def register(request):
     if request.user.is_authenticated:
         return redirect("account")
     form = RegisterForm(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        user = form.save()
-        login(request, user)
-        messages.success(request, "Аккаунт создан. Добавьте ребёнка и запишитесь на занятие.")
-        return redirect("account")
+    if request.method == "POST":
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Аккаунт создан. Добавьте ребёнка и запишитесь на занятие.")
+            return redirect("account")
+        logger.info("Форма register не прошла валидацию: %s", ", ".join(form.errors))
     return render(request, "kids/register.html", {"form": form})
 
 
@@ -434,9 +457,16 @@ def newsletter(request):
     return redirect(request.META.get("HTTP_REFERER") or "home")
 
 
+def handler403(request, exception):
+    logger.warning("403: path=%s user=%s", request.path, getattr(request.user, "username", "anonymous"))
+    return render(request, "kids/403.html", status=403)
+
+
 def handler404(request, exception):
+    logger.warning("404: path=%s", request.path)
     return render(request, "kids/404.html", status=404)
 
 
 def handler500(request):
+    logger.error("500: path=%s", request.path)
     return render(request, "kids/500.html", status=500)

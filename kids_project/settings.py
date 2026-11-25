@@ -166,3 +166,37 @@ MAILERS = {
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@umny-rebenok.ru")
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
+# Журнал приложения: хранится 30 дней, ротация раз в сутки.
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{asctime} {levelname} {name} {message}",
+            "style": "{",
+        }
+    },
+    "handlers": {
+        "file": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": str(LOG_DIR / "app.log"),
+            "when": "midnight",
+            "backupCount": 30,
+            "encoding": "utf-8",
+            "formatter": "verbose",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {"handlers": ["file", "console"], "level": "INFO"},
+    "loggers": {
+        "django.request": {"handlers": ["file", "console"], "level": "ERROR", "propagate": False},
+        "django.security": {"handlers": ["file", "console"], "level": "WARNING", "propagate": False},
+        "kids": {"handlers": ["file", "console"], "level": "INFO", "propagate": False},
+    },
+}

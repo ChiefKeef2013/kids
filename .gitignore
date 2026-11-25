@@ -7,5 +7,6 @@ db.sqlite3
 .env
 media/
 staticfiles/
+logs/
 .DS_Store
 Thumbs.db

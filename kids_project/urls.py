@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+handler403 = "kids.views.handler403"
 handler404 = "kids.views.handler404"
 handler500 = "kids.views.handler500"
 
